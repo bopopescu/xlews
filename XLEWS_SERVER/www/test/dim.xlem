@@ -1,0 +1,32 @@
+<@page version="1.0"@>
+  
+	<@dim i as integer@>
+	<@dim b as boolean@>
+	<@dim l as long@>
+	<@dim d as double@>
+	<@dim f as float@>
+	
+	<@dim bfr as buffer@>
+	<@dim v as vector@>
+	<@dim mp as map@>
+	
+	<@dim s as string@>	
+	<@dim bt as byte@>
+	<@dim dt as date@>
+	
+	
+	<@dim db as genericdatabase@>
+
+
+<@/page@>
+
+<@content type="text/html" encoding="utf-8"@>
+<html>
+<head>
+<title>TEST DIM</title>
+</head>
+<body>
+	[[TEST_OK]]
+</body>
+</html>
+<@/content@>

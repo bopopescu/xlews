@@ -1,0 +1,77 @@
+<@//
+	
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+	
+@>
+
+<@page version="1.0"@>
+
+	<@// Function "@page" inside ...@>
+	<@function average(a,b)@>
+		<@return (a+b)/2@>
+	<@/function@>
+	
+	
+	<@dim db as genericdatabase@>
+
+
+<@/page@>
+
+<@// Sum between '@page' and '@content'@>
+<@function sum(a,b)@>
+	<@return a+b@>
+<@/function@>
+
+<@content type="text/html" encoding="utf-8"@>
+<html>
+<head>
+<title>TEST DIM</title>
+</head>
+<body>
+
+	<@dim a as integer@>
+	<@dim b as integer@>
+	<@set 
+		a=5@>
+	<@set b=7@>
+	
+	
+<@// Function "@body" inside@>	
+<@function sub(a,b)@>
+	<@return a-b@>
+<@/function@>	
+
+	<@dim res as boolean@>
+	<@set res = (average(a,b)==((a+b)/2)) and (sum(a,b)==(a+b))  and 
+	(sub(a,b)==(a-b)) and (multiply(a,b)==a*b)
+	@>  
+	
+		<@if 
+			res
+		@>
+			[[TEST_OK]]
+		<@else@>
+			[[TEST_KO]] - functions don't properly work!
+		<@endif@>
+</body>
+</html>
+<@/content@>
+
+<@// Function after "content"@>
+<@function multiply(a,b)@>
+	<@dim r as integer@>
+	<@set r=a*b@>
+	<@return r@>
+<@/function@>
