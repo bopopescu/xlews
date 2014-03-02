@@ -1,0 +1,35 @@
+<@page version="1.0"@>
+
+
+<@/page@>
+<@content type="text/html" encoding="UTF-8"@>
+<html>
+
+<head><title>XLEWS 1.0.0</title></head>
+
+<body style="font-family: arial,verdana">
+<div align='center' style="background:#eee">
+<span style="font-size:55px;font-weight:bold; color:#BB8800">X</span>
+<span style="font-size:44px;font-weight:normal; color:#888">Lews</span>
+<br><b>Web and Application Server - Community Edition</b>
+<br>Version&nbsp;<@=application.server.SERVER_VERSION@>
+<br><br>
+If you're seeing this, you've successfully installed XLEWS. Congratulations!
+<br>&nbsp;
+</div>
+<form>
+<div align="center" style="background:#ccc">
+	<button>Examples</button>
+	<button>License</button>
+	<button>Bonsai Guide</button>
+	<button>XLEWS Site</button>
+	<button>Source Code</button>
+</div>
+</form>
+<div align="center" style="font-size:12px; color:#888;">
+Copyright &copy;2012-2014 Lemansys S.r.l.. All Rights Reserved
+</div>
+</body>
+
+</html>
+<@/content@>

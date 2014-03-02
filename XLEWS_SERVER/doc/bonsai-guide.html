@@ -1,0 +1,4292 @@
+<html>
+<!-- 
+
+Created on Feb 22, 2014
+
+@author: mgshow
+
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Lemansys XLEWS Bonsai Guide 1.0.0 - Alpha</title>
+<style>
+
+body {
+	font-family: Verdana,Arial;
+	font-size: 12px;
+}
+
+ pre  {
+ 	background:#ddd;
+ }
+ 
+ th  {
+ 	background:#bbb;
+ }
+ 
+table {
+	font-size: 12px;
+}
+ 
+ td {
+ 	border-style: dotted;
+ 	border-width: 1px;
+ 	border-color: #bbb;
+ 	background:#ddd;
+ }
+</style>
+</head>
+
+<body>
+<a name="TOP"></a>
+<h1>XLEWS Bonsai Guide</h1>
+
+<h3>Version 1.0.0 - Alpha</h3>
+
+<table>
+<tr><th>Author</th><th>Operation</th><th>Description</th></tr>
+
+
+<tr><td>mgshow</td><td>2014-02-22</td>
+<td>Starts to deploy Bonsai Guide</td></tr>
+</table>
+
+<h1>Topics</h1>
+
+<ul>
+<li><a href="#Preface">Preface</a></li>
+<li><a href="#License">License</a></li>
+<li><a href="#AboutXLEWS">About XLEWS</a></li>
+<li><a href="#Installation">Getting Started</a></li>
+<li><a href="#XLEMServerPages"><i>XLEM</i> Server Pages</a></li>
+<li><a href="#XLEWSApplicationProject">XLEWS Applications</a></li>
+<li><a href="#Variables">Variables and Expressions</a></li>
+<li><a href="#ConditionalStatements">Conditional Statements</a></li>
+<li><a href="#Loops">Loops</a></li>
+<li><a href="#Modules">Modules (.xlmh)</a></li>
+<li><a href="#TextParser">Text File I/O</a></li>
+<li><a href="#Errors">Error Management</a></li>
+<li><a href="#XmlParser">XML Parsing, building and validation</a></li>
+<li><a href="#XslEngine">XSL Engine</a></li>
+<li><a href="#RequestResponse">User (http) request and response handling</a></li>
+<li><a href="#Sessions">User (http) session handling</a></li>
+<li><a href="#ApplicationData">Application Data Management</a></li>
+<li><a href="#JavaCode">Putting Java &trade; code inside <i>XLEM</i> </a></li>
+<li><a href="#CustomFunctions">Custom Functions</a></li>
+<li><a href="#ImportAndExtend">Importing and extending XLEWS with Java &trade; Packages</a></li>
+<li><a href="#Globals">Global variables</a></li>
+<li><a href="#HttpClient">Embedded HTTP Client</a></li>
+<li><a href="#DatabaseAccess">Database Access</a></li>
+<li><a href="#Localization">Application Localization</a></li>
+<li><a href="#HTML5">HTML 5 and CSS 3 development</a></li>
+<li><a href="#Mobile">Mobile development and device recognition</a></li>
+<li><a href="#RSS">RSS Feed reader</a></li>
+<li><a href="#AdvancedOutput">Advanced output features (switchout)</a></li>
+<li><a href="#RestServices">Creating REST services (text/xml/json)</a></li>
+<li><a href="#Mixing">Mixing .xlem pages with .jsp (and Servlets)</a></li>
+<li><a href="#Eclipse">XLEWS Development under Eclipse platform - Plugins</a></li>
+<li>Appendix - XLEWS Tag Set</li>
+<li>Appendix - <i>XLEM</i> functions</li>
+<li>Appendix - Advanced Project Application Settings</li>
+</ul>
+
+
+<a name="Preface"></a>
+<h1>Preface</h1>
+<p>
+This guide is NOT a complete tutorial on XLEWS framework
+and is addressed to new developers and provides a quick and (we hope) clean approach to <i>.xlem</i> philosophy. 
+
+<br><br>If you're an expertise web developer, this framework will speed up your
+development time with provided set of prepared components and a less complex syntax than 
+other languages.
+
+<br><br>This guide is "under construction": we do apologize for mistakes and partial descriptions
+and we'll be delighted to receive any suggestion.
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<a name="License"></a>
+<h1>License</h1>
+<p>
+
+<pre>
+
+  Copyright (c) 2012-2014 Lemansys S.r.l - ITALY, Inc. All rights reserved.
+ 
+  XLEWS is a free framework; you can redistribute it and/or modify it under
+  the terms of the Apache 2 License (the "License").
+  You may obtain a copy of the License at
+
+    <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  
+  XLEWS may interact with other software such as Python, MySQL and MongoDB 
+  with licenses provided by related owners.
+  
+</pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<h2><a name="AboutXLEWS"></a>About XLEWS</h2>
+<p>
+XLEWS is an acronym of eXtraordinary Lightweight Extensible Web and application Server.
+<br><br>
+XLEWS is a lightweight framework developed with <a href="http://en.wikipedia.org/wiki/Python_%28programming_language%29">Python 3.x</a>,  
+very quick, smart and easy and addressed also to web developers with no big experience.
+<br><br>
+XLEWS is absolutely <b>free</b> and <b>open source</b> and released under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2</a> license.
+<br><br>
+As development side XLEWS is fully integrable with Eclipse IDEs via "ad hoc" plugins.
+<br><br>
+XLEWS can be combined with Apache Web Server via proxy pass.
+<br><br>
+You can free download source and binaries XLEWS versions in <a href="https://github.com/mgshow/xlews">GIT HUB site</a>.
+
+<br><br>Other important provided features:
+<ul>
+<li>HTML 5 and CSS 3 Ready</li>
+<li>Web Socket compliant</li>
+<li>Alternative language scripting</li>
+<li>Modular programming</li>
+<li>Mobile development</li>
+<li>Large component sets ready to use</li>
+<li>Platform independent</li>
+<li>Documentation and examples</li>
+</ul>
+
+
+<br>
+Please consider XLEWS as an absolutely free product; in any case we cannot be responsible to damages or thoughtless use of the software.
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<h2><a name="Installation"></a>Getting started...</h2>
+<p>
+XLEWS is running under as Python program and for this reason <b>you must download and configure it</b> in your environment.
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<h2><a name="XLEMServerPages"></a><i>XLEM</i> Server Pages</h2>
+<p>
+<i>XLEM</i> Server Pages are  text files saved into your web application with <i>.xlem</i> suffix and let you to generate dynamic behaviors,
+rather than simply provide dynamic content (html, images ...) to final users.
+<br><br>
+This pages are <b>tag based</b>, <b>case sensitive</b>,  identified by sequence <@ … @> (and “closure” sequence where needed <@/ … @> ) and can be mixed with html (or xml) tags.
+<br><br> 
+Every <i>XLEM</i> Page is usually composed by 2 (two) sections:
+<ul><li>page section</li><li>content section</li></ul>
+<br>
+<b>@Page</b> section is <b>required</b>. 
+<br><br><b>@Content</b> section is optional (for example when a page will redirect response to another <i>XLEM</i> 
+or any internal or external url)
+<br><br>
+Use “page” section for variable declarations and occasional computation that precedes the answer to user browser 
+that is coded into “content” section specifying related markup (default is text/html with UTF-8 encoding).
+
+<br><br><b>Any "standard" output operation must be performed only inside <code>@content</code> section !!!</b>
+
+
+<br><br>
+This is an “hello world” <i>XLEM</i> example:
+
+<code><pre>
+&lt;@page version="1.0"@&gt;
+    &lt;@// put your computational code here... @&gt;
+    &lt;@dim name as string@&gt;
+    &lt;@set name=”mgshow”@&gt;
+&lt;@/page@&gt;
+&lt;@content type=”text/html” encoding=”UTF-8”@&gt;
+    &lt;html&gt;
+        &lt;head&gt;&lt;title&gt;Hello World!&lt;/head&gt;
+        &lt;body&gt;
+            Hello Mr. &lt;@=name@&gt; !!!
+        &lt;/body&gt;
+    &lt;/html&gt;
+&lt;@/content@&gt;
+</pre></code>
+
+<br>
+You declare a string variable named “name” with value “mgshow”. Then you respond to connected user browser with a message “Hello Mr. mgshow !!!”
+<br>
+<i>XLEM</i> pages are converted in Python programs, compiled and executed by the Application Server.
+<br>
+<i>XLEM</i> provides a small, powerful and self explain tag set (@dim, @set, @if, @for, @while …): for complete list please see Appendix A.
+<br>
+<i>XLEM</i> provides also a set of functions that speed up your developement (isblank(), tointeger(), htmlformat() …): for complete list please see Appendix B.
+</p>
+
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<h2><a name="XLEWSApplicationProject"></a>XLEWS Applications</h2>
+<p>
+You've to create necessarly a XLEWS project to run your set of <i>.xlem</i> pages.
+<br>
+A XLEWS Project is a JSP/Servlet application: any XLEWS application is "simply" deployed as JSP/Servlet application.
+<br>
+<br>You can import, export and deploy XLEWS application such as <b><code>.WAR</code></b> files.
+<br><br>
+XLEM is already providing an Eclipse plugin suite to better and quick development of your applications.
+<br><br>
+To deploy and undeploy applications you so can use Tomcat console manager or (at development phase)
+related embedded test server (ex: Eclipse WTP)
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<h2><a name="Variables"></a>XLEWS Variables and Expressions</h2>
+<p>
+<b>XLEM Variables</b><br>
+Any <i>.xlem</i> page lets you  define variables.
+<br>You can define variables both in page and content sections.
+<br>You cannot define an already declared variable.
+<br>Any declared "base"variable must not be necessarly initialized: XLEWS will do it!!!
+<br><br>To declare XLEWS variables you must use the <b><code>@dim</code></b> tag
+<pre><code>
+&lt;@dim <i>varname</i> as <i>vartype</i>@&gt;
+</code></pre>
+<br>To initialize XLEWS variables you must use the <b><code>@set</code></b> tag
+<pre><code>
+&lt;@set <i>varname</i> = <i>value or expression</i>@&gt;
+</code></pre>
+<br>You can use the following variable types:<br>
+<table>
+<tr><th>VarType</th><th>Related Java class/primitive</th><th>Notes</th></tr>
+<tr><td><b>boolean</b></td><td>boolean</td><td>boolean values (default = false)</td></tr>
+<tr><td><b>cookie</b></td><td>com.xXLEM.http.XLEMCookie</td><td>new cookie instance</td></tr>
+<tr><td><b>date</b></td><td>com.xXLEM.datatype.XLEMDate</td><td>date(/time) values (default is "now")</td></tr>
+<tr><td><b>double</b></td><td>double</td><td>double values (default = 0.0d)</td></tr>
+<tr><td><b>float</b></td><td>float</td><td>float values (default = 0.0f)</td></tr>
+<tr><td><b>integer</b></td><td>int</td><td>integer values (default = 0)</td></tr>
+<tr><td><b>long</b></td><td>long</td><td>long values (default = 0L)</td></tr>
+<tr><td><b>string</b></td><td>java.lang.String</td><td>String values (default = "" [empty string])</td></tr>
+</table>
+<br>In addition you can define multiple instance of "base" variables (arrays), but in this case you'll have to initialize it using related Java class:<br>
+<table>
+<tr><th>VarType</th><th>Related Java class/primitive</th><th>Notes</th></tr>
+<tr><td><b>booleanarray</b></td><td>boolean[]</td><td>boolean array</td></tr>
+<tr><td><b>cookiearray</b></td><td>com.xXLEM.http.XLEMCookie[]</td><td>cookie arrays</td></tr>
+<tr><td><b>datearray</b></td><td>com.xXLEM.datatype.XLEMDate[]</td><td>date arrays</td></tr>
+<tr><td><b>doublearray</b></td><td>double[]</td><td>double arrays</td></tr>
+<tr><td><b>floatarray</b></td><td>float[]</td><td>float arrays</td></tr>
+<tr><td><b>integerarray</b></td><td>int[]</td><td>integer arrays</td></tr>
+<tr><td><b>longarray</b></td><td>long[]</td><td>long arrays</td></tr>
+<tr><td><b>stringarray</b></td><td>java.lang.String[]</td><td>String arrays</td></tr>
+</table>
+
+<br>XLEM can also provide you a few very useful objects. These objects can be declared with the same <code><b>@dim</b></code>
+statement and will be discussed later in this guide.<br>
+
+<table>
+<tr><th>ObjectType</th><th>Related Java class/primitive</th><th>Notes</th></tr>
+<tr><td><b>genericdatabase</b></td><td>com.xXLEM.datatype.XLEMGenericDatabase</td><td>Very useful when connecting with a "sql" database</td></tr>
+<tr><td><b>localizer</b></td><td>com.xXLEM.datatype.XLEMLocalizer</td><td>Useful when localizing application (same scope of Resource Bundle)</td></tr>
+<tr><td><b>option</b></td><td>com.xXLEM.datatype.XLEMOption</td><td>Useful to manage list options and automatically binding values into "select" html tag</td></tr>
+<tr><td><b>rssnews</b></td><td>com.xXLEM.xml.XLEMRSSNews</td><td>Manage a single RSS Item</td></tr>
+<tr><td><b>rssnewsreader</b></td><td>com.xXLEM.xml.XLEMRSSNewsReader</td><td>Lets you to connect with a RSS channel and retrive results as "rssnews"</td></tr>
+<tr><td><b>sqlform</b></td><td>com.xXLEM.datatype.XLEMSQLForm</td><td>Easy (and simple mapper) between a SQL Table and Form. Under development: for testing purpose only</td></tr>
+<tr><td><b>sqlview</b></td><td>com.xXLEM.datatype.XLEMSQLView</td><td>Easy (and simple mapper) between a SQL Query and Form. Under development: for testing purpose only</td></tr>
+<tr><td><b>textfilereader</b></td><td>com.xXLEM.datatype.XLEMTextFileReader</td><td>Manage Text File Input Streams</td></tr>
+<tr><td><b>textfilewriter</b></td><td>com.xXLEM.datatype.XLEMTextFileWriter</td><td>Manage Text File Output Streams</td></tr>
+<tr><td><b>xmlbuilder</b></td><td>com.xXLEM.xml.XLEMXMLBuilder</td><td>Used to quickly compose XML streaming in memory</td></tr>
+<tr><td><b>xmldocument</b></td><td>com.xXLEM.xml.XLEMXMLDocument</td><td>XML DOM parser from multiple source (StringBuffer, URL, File and generic input stream)</td></tr>
+<tr><td><b>xmlparser</b></td><td>com.xXLEM.xml.XLEMXMLParser</td><td>This is a very quick and easy version of XML SAX from multiple source (StringBuffer, URL, 
+File and generic input stream): you can parse a lot of MB in a few seconds!!!</td></tr>
+<tr><td><b>xmlvalidator</b></td><td>com.xXLEM.xml.XLEMXMLValidator/td><td>Validate an XML source using specified xsd</td></tr>
+<tr><td><b>xsltransformer</b></td><td>com.xXLEM.xml.XLEMXSLTranformer</td><td>Use this component when transforming an XML streaming with a 
+XSL stylesheet: usually HTML markup is returned.  </td></tr>
+</table>
+
+
+
+<br><br>And finally you can also declare not XLEWS standard variables using the <b><code>javatype @dim</code></b> tag attribute
+<pre><code>
+&lt;@dim <i>varname</i> as javatype <i>vartype</i>@&gt;
+</code></pre>
+in this case you must initialize your variable<br>
+Example:
+<pre><code>
+&lt;@dim <i>extDate</i> as javatype <i>java.util.Date</i>@&gt;
+&lt;@set <i>extDate</i>= new <i>java.util.Date()</i>@&gt;
+</code></pre>
+
+<br><br><b>You can declare and initialize in the same way only a Java™ classes 
+admitting "no args" constructor by using 
+<b><code>newjavatype</code></b> statement !!!</b>
+
+<br><br>Example:
+<pre><code>
+&lt;@dim <i>myBuffer</i> as javatype <i>StringBuffer</i>@&gt;
+&lt;@set <i>myBuffer</i>= new <i>StringBuffer()</i>@&gt;
+</code></pre>
+is equivalent to:
+<pre><code>
+&lt;@dim <i>myBuffer</i> as <b>newjavatype</b> <i>StringBuffer</i>@&gt;
+</code></pre>
+
+<br><br>This is a simple example of variable declaration and settings...
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@// Some variable declaration...@&gt;
+	&lt;@dim k as integer@&gt;
+	&lt;@dim i,j as integer@&gt;
+	&lt;@set i=100@&gt;
+	&lt;@set j=i*2@&gt;
+	&lt;@set k=j+3@&gt;
+	
+	&lt;@dim firstName as string@&gt;
+	&lt;@set firstName="John"@&gt;
+	&lt;@dim lastName as string@&gt;
+	&lt;@set lastName="Doe"@&gt;
+	
+	&lt;@dim items as integerarray@&gt;
+	&lt;@set items=new int[] {1,2}@&gt;
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;@//HTML (dynamic) code goes here...@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Variables & Expressions&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		i= &lt;@=i@&gt; , j= &lt;@=j@&gt; , k = &lt;@=k@&gt;	
+		&lt;@dim fullname as string@&gt;
+		&lt;@set fullname=(firstName+" "+lastName).toUpperCase()@&gt;
+		&lt;br&gt;Full name is &lt;@=fullname@&gt;
+		&lt;br&gt;Sum is &lt;@=items[0]+items[1]@&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+</code></pre>
+... this page return<br><pre>
+i= 100 , j= 200 , k = 203
+Full name is JOHN DOE 
+Sum is 3
+</pre>
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="ConditionalStatements"></a>
+<h2>Conditional Statements</h2>
+<p>XLEWS allows you to manage conditional statements using the following tags:
+<ul>
+<li><code>&lt;@if <i>expression</i> @&gt;</code></li>
+<li><code>&lt;@elseif <i>expression</i> @&gt;</code> (zero or more occurencies...)</li>
+<li><code>&lt;@else@&gt;</code> (zero or just one occurency)</li>
+<li><code>&lt;@endif@&gt; [or &lt;@/if@&gt;]</code></li>
+</ul>
+<code><i>expression</i></code> follows the rules of Java™ syntax: for better understanding we 
+suggest to view <a href="http://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html">related topic</a> 
+<br>In any case XLEWS don't use parentheses after <code>@if</code> statement conditional expression
+and you must not use brackets in sequences. But remember that in the Java™ sections that can be embedded in Lem pages you, 
+of course, must follow Java™ rules.
+<br><code>@endif</code> and <code>@/if</code> are equivalents.
+<br>Please follow this example:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@// How to use conditional statements...@&gt;
+	&lt;@dim connectionDate as date@&gt;
+	
+	&lt;@dim MORNING_HELLO,AFTERNOON_HELLO,EVENING_HELLO as string@&gt;
+	
+	&lt;@set MORNING_HELLO="Good Morning"@&gt;
+	&lt;@set AFTERNOON_HELLO="It's Afternoon"@&gt;
+	&lt;@set EVENING_HELLO="Good Evening"@&gt;
+	
+	
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Conditional Statements with XLEWS 4.1&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+
+	&lt;@dim hour as integer@&gt;
+	&lt;@set hour=connectionDate.gethour()@&gt;
+
+		&lt;@if hour&lt;14@&gt;
+			&lt;@=MORNING_HELLO@&gt;
+		&lt;@elseif hour&lt;18@&gt;	
+			&lt;@=AFTERNOON_HELLO@&gt;
+		&lt;@else@&gt;
+			&lt;@=EVENING_HELLO@&gt;
+		&lt;@endif@&gt;
+				
+		dear user...
+	 &lt;/body&gt;
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+
+</code></pre>
+
+and a possible return message should be...
+
+<pre><code>Good Evening dear user... </code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="Loops"></a>
+<h2>Loops</h2>
+<p>XLEWS allows you to manage loops using the following tag sequences:
+<ul>
+<li><code>&lt;@for <i>variable = startValue to endValue [step incrementValue]</i> @&gt; ... &lt;@next@&gt;</code></li>
+<li><code>&lt;@while <i>expression</i> @&gt; ... &lt;@wend@&gt;</code></li>
+<li><code>&lt;@forall <i>javaType variable in ARRAY </i> @&gt; ... &lt;@endforall@&gt;</code></li>
+</ul>
+Every <code><i>@for variable</i></code> must be declared before and outside loop sequence.
+<br>
+Every <code><i>@forall variable</i></code> must be declared inside tag with specified Java™ type
+and must have the same <code>javaType</code> of <code>ARRAY</code> item! 
+<br>
+<br><code>@next</code>, <code>@endfor</code> and <code>@/for</code> are equivalents.
+<br><code>@wend</code>, <code>@endwhile</code> and <code>@/while</code> are equivalents.
+<br><code>@endforall</code> and <code>@/forall</code> are equivalents.
+<br><br>Please follow this example:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@// Running Loops on XLEWS platform...@&gt;
+	&lt;@dim i as integer@&gt;
+	&lt;@dim bestFriends as stringarray@&gt;
+	&lt;@set bestFriends=new String[] {"Mark","Paul","Mattew","Gino"}@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Loops&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+	 	&lt;@dim base as integer@&gt;
+	 	&lt;@set base=4@&gt;
+		&lt;@for i=1 to 11 step 3@&gt;
+			&lt;@=base@&gt;*&lt;@=i@&gt; = &lt;@=base*i@&gt; |
+		&lt;@endfor@&gt;&lt;br&gt;
+		
+		&lt;@set i=10@&gt;Wild sequence:
+		&lt;@while i&lt;100@&gt;
+			&lt;@=i@&gt;
+			&lt;@set i*=2@&gt;&amp;nbsp; &lt;@// equals to i=i*2 @&gt;
+		&lt;@wend@&gt;
+		
+		&lt;br&gt;My best Friends are 
+		&lt;@forall String friend in bestFriends@&gt;
+			&lt;@=friend@&gt;&amp;nbsp;
+		&lt;@endforall@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+
+</code></pre>
+
+and the output is...
+
+<pre><code>
+4*1 = 4 | 4*4 = 16 | 4*7 = 28 | 4*10 = 40 | 
+Wild sequence: 10  20  40  80 
+My best Friends are Mark  Paul  Mattew  Gino 
+
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="Modules"></a>
+<h2>Modules (.xlmh)</h2>
+<p>
+Sometime should be very useful to share content between pages or split content management 
+of very long pages in multiple sub entities.
+<br><br>XLEWS provides a <code>@external</code> tag wich you can import "shared" code from <b>one 
+or more</b> module(s)
+
+<pre><code>
+&lt;@external <i>src=&quot;[[$root/]path/]module-name.xlmh&quot;</i> @&gt;
+</code></pre>
+
+<br><b>The inclusion is made at compilation time and not at runtime!!!</b>
+
+<br><br>A <i>XLEM</i> module is a text file with suffix <code><i>.xlmh</i></code>
+
+<br><br>A <i>XLEM</i> module is not a complete <code><i>.xlem</i></code> page and may 
+not contains <code><i>lem tags</i></code> but, for example, only markup tags such as html
+ or static text.
+
+<br><br>A <i>XLEM</i> module cannot be directly called by browser url.
+
+<br><br>When you save a <code><i>.xlmh</i></code> module the main page will be refreshed and recompiled!
+<br><br>A <code><i>.xlmh</i></code> module can include another module: in this case the 
+<code><i>path</i></code> will be referred to main including <code><i>.xlem</i></code> page path, or 
+if your specify <code><i>$root</i></code> prefix XLEWS will search module from Application Root (Web)Content. 
+<br><br>See this example:
+<pre><code>
+&gt; main file: modules.xlem
+&gt;&gt; modules: modules/header.xlmh, modules/footer.xlmh, modules/menu.xlmh
+
+<hr>
+<i>modules.xlem - source:</i>
+
+&lt;@page version="1.0"@&gt;
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Modules (.xlmh)&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		&lt;@external src="modules/header.xlmh"@&gt;
+		!!! I'm in body section !!!
+		&lt;@external src="modules/footer.xlmh"@&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+<hr>
+<i>modules/header.xlmh - source:</i>
+
+&lt;@dim currentTime as date@&gt;
+[Company Logo] current time: &lt;@=currentTime.format("hh:mn:ss")@&gt;
+&lt;@external src="modules/menu.xlmh"@&gt;
+
+<hr>
+<i>modules/menu.xlmh - source:</i>
+
+&lt;hr&gt;
+Home | Contacts | Who We Are
+
+<hr>
+<i>modules/footer.xlmh - source:</i>
+
+&lt;hr&gt;
+POWERED by 
+&lt;@=com.xXLEM.lews.runtime.XLEMApplicationServer.SERVER_NAME@&gt;
+
+
+</code></pre>
+<br><br>and result should appear similar to:
+<pre><code>
+[Company Logo] current time: 01:10:39
+
+<hr>
+Home | Contacts | Who We Are
+<hr>
+	
+		!!! I'm in body section !!!
+		
+<hr>
+POWERED by XLEM XLEWS
+</code></pre>
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="TextParser"></a>
+<h1>Text File I/O</h1>
+<p>
+XLEWS provides a quick way to read/parse text file streaming 
+using <b><code>textfilereader</code></b> component (
+<code>com.xXLEM.datatype.XLEMTextFileReader</code>) and  to write
+using <b><code>textfilewriter</code></b> component (
+<code>com.xXLEM.datatype.XLEMTextFileWriter</code>).
+<br><br>You can read or write "line by line" from and to multiple streaming sources.
+
+<br><br>Let us to show just some example about opening read methods of
+<code>textfilewriter</code>:
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+
+<tr><td><code>openfromfile(string filename, string encoding)</code></td>
+<td>tries to open a text streaming from <code>filename</code> source path with
+specified <code>encoding</code> returning <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+<tr><td><code>openfromfile(string filename)</code></td>
+<td>tries to open a text streaming from <code>filename</code> source path without specified encoding.
+Returns <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+
+<tr><td><code>openfromurl(string url, string encoding)</code></td>
+<td>tries to open a text streaming from <code>url</code> address with
+specified <code>encoding</code> returning <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+<tr><td><code>openfromurl(string url)</code></td>
+<td>tries to open a text streaming from <code>url</code> address without specified encoding.
+Returns <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+
+<tr><td><code>openfromstream(InputStream stream, string encoding)</code></td>
+<td>tries to open a text streaming from <code>stream</code> generic inputstream with
+specified <code>encoding</code> returning <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+<tr><td><code>openfromstream(InputStream stream)</code></td>
+<td>tries to open a text streaming from <code>stream</code> generic inputstream without specified encoding.
+Returns <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+
+</table>
+
+<br><br>Let us to show just some example about opening write methods of 
+<code>textfilewriter</code>:
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+
+<tr><td><code>opentofile(string filename, string encoding)</code></td>
+<td>tries to open a text streaming to <code>filename</code> source path with
+specified <code>encoding</code> returning <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+<tr><td><code>opentofile(string filename)</code></td>
+<td>tries to open a text streaming to <code>filename</code> source path without specified encoding.
+Returns <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+
+<tr><td><code>opentostream(OutputStream stream, string encoding)</code></td>
+<td>tries to send a text streaming to <code>stream</code> outputstream  with
+specified <code>encoding</code> returning <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+<tr><td><code>opentostream(OutputStream stream)</code></td>
+<td>tries to send a text streaming to <code>stream</code> outputstream without specified encoding.
+Returns <code>true</code> if operation was successfully
+accomplished, otherwise <code>false</code>.</td></tr>
+
+
+</table>
+
+
+
+<br><br>Please see the related javadoc for complete documentation.
+<br><br>With this example we'll try to read a local simple <code>.csv</code> file and display 
+splitted data row at video such as HTML table.
+
+<br><br>This is <code>resources/users.csv</code> file:
+<pre><code>
+# User list
+# Username; First Name; Last Name; Email
+
+a.scott;Alfred;Scott;ascott@acme.com
+p.green;Paul;Green;pgreen@acme.org
+
+# End of file
+
+</code></pre>
+
+<br>This is <code>textfilereader.xlem</code> source code:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim reader as <b>textfilereader</b>@&gt;
+	
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Text I/O - Reader&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		&lt;h1&gt;XLEWS - Reading Text File&lt;/h1&gt;
+		
+		&lt;@if reader.<b>openfromfile</b>(toURI("resources/users.csv"))@&gt;
+		
+			&lt;table&gt;
+				&lt;tr&gt;&lt;th&gt;User Name&lt;/th&gt;&lt;th&gt;First Name
+				&lt;/th&gt;&lt;th&gt;Last Name&lt;/th&gt;
+				&lt;th&gt;Email&lt;/th&gt;&lt;/tr&gt;
+			
+			&lt;@dim line as string@&gt;
+			&lt;@dim items as stringarray@&gt;
+			&lt;@dim i as integer@&gt;
+			
+			&lt;@while reader.<b>hasline</b>()@&gt;
+			
+				&lt;@set line=reader.<b>nextline()</b>@&gt;
+				
+		&lt;@if !isblank(line) && !line.startsWith("#")@&gt;
+		
+			&lt;@set items=line.split(";")@&gt;
+
+			&lt;@if items.length==4@&gt;
+				&lt;tr&gt;
+					&lt;@for i=0 to 3@&gt;
+					&lt;td&gt;&lt;@=items[i]@&gt;&lt;/td&gt;
+					&lt;@endfor@&gt;
+				&lt;/tr&gt;
+			&lt;@endif@&gt;
+		&lt;@/if@&gt;
+				
+			&lt;@wend @&gt;
+			
+			&lt;/table&gt;
+		
+		
+			&lt;@call <b>reader</b>.close()@&gt;
+		
+		&lt;@else@&gt;
+		
+			ERROR= &lt;font color='red'&gt;&lt;@=reader.<b>geterror</b>()@&gt;&lt;/font&gt;
+		
+		&lt;@endif@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>This is the final output response:
+<pre><code>
+<h1>XLEWS - Reading Text File</h1><table>
+				<tr><th>User Name</th><th>First Name</th><th>Last Name</th><th>Email</th></tr>
+						<tr>
+							<td>a.scott</td>
+							<td>Alfred</td>
+							<td>Scott</td>
+							<td>ascott@acme.com</td>
+						</tr>
+						<tr>
+							<td>p.green</td>
+							<td>Paul</td>
+							<td>Green</td>
+							<td>pgreen@acme.org</td>
+						</tr>
+			</table>
+			
+</code></pre>
+
+<br><br>This example will try to save a file inside a "temporary" folder.
+
+<br><br><code>textfilewriter.xlem</code> source code:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim newFile as string@&gt;
+	&lt;@set newFile=<b>System.getProperty</b>("java.io.tmpdir")+
+	"lews-test-out.txt"@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Text I/O - Writer&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		File to save should be located at Server Path :
+		&lt;br&gt;&lt;b&gt; &lt;@=newFile@&gt;&lt;/b&gt;
+		
+		&lt;@dim outF as <b>textfilewriter</b>@&gt;
+		 
+		&lt;@if outF.<b>opentofile</b>(newFile)@&gt;
+		
+			&lt;@call outF.<b>writeline</b>("FIRST LINE!")@&gt;
+			
+			&lt;@call outF.<b>writeline</b>("SECOND LINE ...")@&gt;
+			
+			&lt;@call outF.<b>write</b>("... and CONTINUE!")@&gt;
+			
+			&lt;@call outF.<b>writeline</b>("LAST LINE!")@&gt; 
+			
+			&lt;@call outF.<b>close</b>()@&gt;
+			
+			&lt;hr&gt;File successfully saved and closed!!!
+		
+		&lt;@else@&gt;
+		
+			ERROR: &lt;font color="red"&gt;
+			&lt;@=outF.<b>geterror</b>()@&gt;&lt;/font&gt;
+		&lt;@endif@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>The output response should look similar:
+<pre><code>
+File to save should be located at Server Path :
+<br><b> /TEMPORARY-SPECIFIC-PAT .../lews-test-out.txt</b>
+<hr>File was successfully saved and closed!!!
+		
+</code></pre>
+
+<br><br>Please verify that saved <code>lews-test-out.txt</code> file looks like:
+<pre><code>
+
+FIRST LINE!
+SECOND LINE ...... and CONTINUE!
+LAST LINE!
+
+</code></pre>
+
+</p>
+
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="Errors"></a>
+<h1>Error Management</h1>
+<p>
+As you'll se multiple time on this tutorial, XLEWS "anticipate" developers in ERROR management.
+<br><br>Usually XLEWS tags and components do not "trows" exceptions, but give back  <code>true</code>
+if operation was successfully performed or <code>false</code> otherwise; in addition developer 
+can retrieve error message details by calling <code>.geterror()</code> method of related component.
+
+<br><br>In any case XLEWS is <b>extensible</b> and <b>integrable</b> with every Java™ component,
+bean and library: sometime developers should directly manage exceptions and errors.
+
+<br><br>To do it, XLEWS provides a "simple" error management based on tags:
+<ul>
+<li><b><code>&lt;@try@&gt;</code></b> Trowable sequence code<b><code>&lt;@/try@&gt;</code></b> </li>
+<li><b><code>&lt;@catch@&gt;</code></b> Java™ exception type<b><code>&lt;@/catch@&gt;</code></b> </li>
+<li><b><code>&lt;@finally@&gt;</code></b> Optionally sequence code to be in any case executed<b><code>&lt;@/finally@&gt;</code></b> </li>
+</ul>
+
+<br><code>&lt;@/try@&gt;</code> and <code>&lt;@endtry@&gt;</code> tags are equivalent.
+<br><code>&lt;@/catch@&gt;</code> and <code>&lt;@endcatch@&gt;</code> tags are equivalent.
+<br><code>&lt;@/finally@&gt;</code> and <code>&lt;@endfinally@&gt;</code> tags are equivalent.
+
+<br><br><b><code>@try</code> and <code>@catch</code> sequence tag are mandatory,
+<code>@finally</code> section is optional!!!</b>
+
+<br><br>You can throw one or more exception putting <code>&lt;@catch@&gt;</code> and 
+<code>&lt;@/catch@&gt;</code> in sequence.
+
+<br><br>Into a <code>&lt;@catch;@&gt...&lt;/@catch@&gt;</code> sequence you'll have back
+a pre instantiated <code>exception</code> of 
+<a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Throwable.html"
+><code>java.lang.Throwable</code></a> class type. <b>This <code>exception</code>
+instance will be available only inside related <code>@catch</code> section!!!</b>
+
+<br><br>XLEWS provide a quick and easy way to manage errors; in any case, as we will show on 
+next chapters you'll use directly Java™ code and relate logic to do it ... better. 
+
+<br><br>The following example (<code>error-management.xlem</code>) show a few simple
+lines of code for error management :
+
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim filename as string@&gt;
+	&lt;@set filename="non-existent-file.ext"@&gt;
+	
+	&lt;@dim fis as javatype java.io.FileInputStream@&gt;
+	&lt;@set fis=null@&gt;
+	
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Error Management with XLEWS&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		<b>&lt;@try@&gt;</b>
+			&lt;@set fis=new java.io.FileInputStream(filename)@&gt;
+			
+			&lt;@// Do something... @&gt;
+			
+		<b>&lt;@/try@&gt;</b>
+		<b>&lt;@catch java.io.FileNotFoundException@&gt;</b>
+			FILE NOT FOUND "&lt;@=filename@&gt;" :((&lt;hr&gt;
+			&lt;font color='red'>&lt;@=exception.toString()@&gt;&lt;/font&gt;
+		<b>&lt;@/catch@&gt;</b>
+		<b>&lt;@catch Exception@&gt;</b>
+			GENERIC ERROR opening &lt;@=filename@&gt;&lt;hr&gt;
+			&lt;font color='red'&gt;&lt;@=<b>exception</b>.toString()@&gt;&lt;/font&gt;
+		<b>&lt;@/catch@&gt;</b>
+		<b>&lt;@finally @&gt;</b>
+			&lt;@if !isnull(fis)@&gt;&lt;@call fis.close()@&gt;&lt;@/if@&gt;
+		<b>&lt;@/finally@&gt;</b>
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+
+
+</code></pre>
+
+<br>This should be the final output page result:
+<pre><code>
+
+FILE NOT FOUND "no-existent-file.ext" :((<hr><font 
+color='red'>java.io.FileNotFoundException: no-existent-file.ext (No such file or directory)</font>
+
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="XmlParser"></a>
+<h2>XML parsing, building and validating</h2>
+<p>
+XLEWS provides the following components to accomplish xml integration into your dynamic <code><i>.xlem</i></code> applications
+
+<pre><code>
+
+ <b>Parsing</b>
+ 
+   <i><a href="#sub.xmlparser">xmlparser</a></i>
+   <i><a href="#sub.xmldocument">xmldocument</a></i>	
+
+ <b>Building</b>
+ 
+   <i><a href="#sub.xmlbuilder">xmlbuilder</a></i>
+  	
+ <b>Validation</b>
+ 
+   <i><a href="#sub.xmlvalidator">xmlvalidator</a></i>
+
+</code></pre>
+
+<ul>
+<li><a name="sub.xmlparser"></a><b><code>xmlparser</code></b>
+<br>
+This is a "simple" <code>sax</code> parser that with few tags let you perform "smart" xml parsing.<br><br>
+The common parsing schema is<br>
+<pre><code>
+...
+ &lt;@dim xml as <i>xmlparser</i>@&gt;
+ 
+ &lt;@if xml.open( <i>something...</i> )@&gt;
+ 
+ 	&lt;@while xml.getnexttag()@&gt;
+ 
+ 		&lt;@if xml.<i>istag</i>("someTag")@&gt;
+ 		
+ 			... do something ...
+ 			
+ 		&lt;@elseif xml.<i>istag</i>("anotherTag")@&gt;
+ 		
+ 			... do something ...
+ 			
+ 		&lt;@elseif xml.<i>istag</i>("anotherElseTag")@&gt;
+ 		
+ 			... do something ...
+ 			
+ 		&lt;@endif@&gt;
+ 
+	&lt;@wend@&gt;
+	
+	&lt;@call xml.close()@&gt;
+	
+ &lt;@else@&gt;
+ 
+ 	XML parsing error = &lt;@=xml.geterror()@&gt;
+ 
+ &lt;@endif@&gt;
+...
+</code></pre>
+
+You've to perform these simple steps:
+
+<ul>
+
+<li><code>open( <i>source</i> )</code> where <code><i>source</i></code> can be 
+	<ul><li>a <code>string</code> (ex: "http[s]://yoursite/yourpath/yourxml" or a local file)</li>
+ 		<li>a <code>StringBuffer</code> containing your XML code</li>
+ 		<li>a generic <code>InputStreeam</code> containing your XML streaming<br><br></li>
+	</ul> 
+</li>
+
+<li><code>getnexttag()</code> this loops for all tags </li>
+
+<li><code>istag( <i>tagName</i> )</code> check if <code><i>tagName</i></code> has been currently intercepted</li>
+
+<li><code>close()</code> close parse and release input stream (<b>very important, don't forget!</b>) </li>
+
+</ul>
+
+<br>in addition here are some other useful methods (for complete list please see tutorials or refers to <code><i>com.xXLEM.xml.XLEMXMLParser</i></code> javadoc)
+<ul>
+<li><code>currtagname()</code> return current inspected tag name </li>
+<li><code>getcontent()</code> return current tag content (if not, will return an empty string) </li>
+<li><code>getpar(<i>parName</i>)</code> return <code><i>parName</i></code> tag attribute for the current inspected tag (if not existing attribute, will return an empty string) </li>
+</ul>
+
+<br>We provide this example foe a  better explanation:
+<pre><code>
+
+Suppose that exist the file "resources/demo.xml" under your application
+<hr>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;books&gt;
+ &lt;book&gt;
+	 &lt;id&gt;498756&lt;/id&gt;
+	&lt;title&gt;Antony and Cleopatra&lt;/title&gt;
+	&lt;price currency="USD"&gt;35.00&lt;/price&gt;
+	&lt;author&gt;
+		&lt;name&gt;William Shakespeare&lt;/name&gt;
+		&lt;id&gt;SKSPX012&lt;/id&gt;
+	&lt;/author&gt;
+ &lt;/book&gt;
+	
+ &lt;book&gt;
+	 &lt;id&gt;591287&lt;/id&gt;
+	&lt;title&gt;Divina Commedia&lt;/title&gt;
+	&lt;price currency="USD"&gt;24.50&lt;/price&gt;
+	&lt;author&gt;
+		&lt;name&gt;Dante Alighieri&lt;/name&gt;
+		&lt;id&gt;ALDNY451&lt;/id&gt;
+	&lt;/author&gt;
+ &lt;/book&gt;
+
+&lt;/books&gt;
+
+<hr>
+
+ This <i>.xlem</i> will parse previous file providing the book list 
+ and calculating discount for each one.
+
+<hr>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim xml as xmlparser@&gt;
+	
+	&lt;@dim bookId as string@&gt;
+	&lt;@dim bookAuthor as string@&gt;
+	&lt;@dim bookTitle as string@&gt;
+	&lt;@dim bookCurrency as string@&gt;
+	&lt;@dim bookPrice as float@&gt;
+	&lt;@dim bookRealPrice as string@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Xml Parser&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		Book online store:&lt;hr&gt;
+		&lt;@if xml.open(toURI("resources/demo.xml"))@&gt;
+			
+			&lt;@while xml.getnexttag()@&gt;
+			
+		&lt;@if xml.istag("name")@&gt;
+			&lt;@set bookAuthor=xml.getcontent()@&gt;
+		&lt;@elseif xml.istag("title")@&gt;
+			&lt;@set bookTitle=xml.getcontent()@&gt;	
+		&lt;@elseif xml.isfullpathtag("/books/book/id")@&gt;
+			&lt;@set bookId=xml.getcontent()@&gt;	
+		&lt;@elseif xml.istag("price")@&gt;
+			&lt;@set bookCurrency=xml.getpar("currency")@&gt;		
+			&lt;@set bookPrice=(tofloat(xml.getcontent())*80)/100.0f@&gt;	
+			&lt;@set bookRealPrice=xml.getcontent()@&gt;
+		&lt;@elseif xml.istag("book")@&gt;
+			&lt;@set bookTitle=bookAuthor=bookId=bookCurrency=""@&gt;
+		&lt;@elseif xml.istag("/book")@&gt;	
+			Book - &lt;@=bookId@&gt;: &lt;b&gt;&lt;@=bookTitle@&gt;&lt;/b&gt; by &lt;@=bookAuthor@&gt;
+			only for &lt;@=bookCurrency@&gt; 
+			&lt;strike&gt;&lt;@=bookRealPrice@&gt;&lt;/strike&gt; &lt;b&gt;&lt;@=bookPrice@&gt;&lt;/b&gt;
+			&lt;br&gt;
+		&lt;@endif@&gt;
+			
+			&lt;@wend@&gt;
+			
+			&lt;@call xml.close()@&gt;
+		&lt;@else@&gt;
+		
+		&lt;font color="red"&gt;ERROR: &lt;@=xml.geterror()@&gt;&lt;/font&gt;
+		
+		&lt;@endif@&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+</code></pre>
+
+<br>... the resulting output will be:<br>
+<pre><code>
+Book online store:<hr>
+Book - 498756: <b>Antony and Cleopatra</b> by William Shakespeare
+only for USD 
+<strike>35.00</strike> <b>28.0</b>
+
+Book - 591287: <b>Divina Commedia</b> by Dante Alighieri
+only for USD 
+<strike>24.50</strike> <b>19.6</b>
+
+
+</code></pre>
+
+
+<li><a name="sub.xmldocument"></a><b><code>xmldocument</code></b>
+<br>You may access XML streams using DOM architecture (see reference at <a href="http://www.w3.org/DOM/">http://www.w3.org/DOM/</a>)
+using <code><i>xmldocument</i></code> component.<br><br>
+This component is fully compliant with 
+<a href="http://docs.oracle.com/cd/E17802_01/webservices/webservices/docs/1.6/api/org/w3c/dom/Document.html">org.w3c.dom.Document</a> inteface
+with some useful added methods.<br><br>
+Accessing document with DOM architecture may look more complex than with<code><i>xmlparser</i></code>
+<br><br>We suggest <b> not to use</b> <code><i>xmldocument</i></code> for very large XML (ex: more than 1MB) because
+this will be very expensive for the server: please consider this overhead!!!
+<br><br>However we will show you the same output of previous example using 
+ <code>xmldocument</code> rather than <code>xmlparser</code>.<br>
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim xml as <b>xmldocument</b>@&gt;
+	&lt;@dim bookPrice as float@&gt;		
+	&lt;@dim i as integer@&gt;
+	
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS XML Document &lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		Book online store:&lt;hr&gt;
+		
+		&lt;@if <b>xml.openfromfile</b>(toURI("resources/demo.xml"))@&gt;
+		
+	&lt;@dim bookNodes as javatype org.w3c.dom.NodeList@&gt;
+	&lt;@set bookNodes=<b>xml.getElementsByTagName</b>("book")@&gt;
+	
+	&lt;@dim tNode as javatype org.w3c.dom.Node@&gt;
+	&lt;@dim priceNode as javatype org.w3c.dom.Node@&gt;
+			
+	&lt;@// We're supposing xml well formed ;) @&gt;
+	&lt;@// Otherwise you must check for missing tags !!!@&gt;
+	&lt;@for i=0 to bookNodes.getLength()-1 @&gt;
+			
+		&lt;@set tNode=bookNodes.item(i)@&gt;	
+			
+		Book - &lt;@=xml.getcontent(tNode,"id")@&gt;: 
+			
+		&lt;b&gt;&lt;@=xml.getcontent(tNode,"title")@&gt;&lt;/b&gt;
+		by &lt;@=xml.getcontent
+			 (<b>xml.getFirstElementByTagName</b>(tNode,"author"),
+			 "name")@&gt;
+		
+		&lt;@set priceNode=<b>xml.getFirstElementByTagName</b>(tNode,"price")@&gt;
+		&lt;@if notisnull(priceNode)@&gt;
+			only for  &lt;@=<b>xml.getpar</b>(priceNode,"currency")@&gt;
+			&lt;@set bookPrice=tofloat(<b>xml.getcontent</b>(priceNode))*80/100.0f@&gt;
+			&lt;strike&gt;&lt;@=<b>xml.getcontent</b>(priceNode)@&gt;
+			&lt;/strike&gt; &lt;b&gt;&lt;@=bookPrice@&gt;&lt;/b&gt;
+		&lt;@endif@&gt;	
+	 &lt;br&gt;
+			
+		&lt;@endfor@&gt;
+	
+		&lt;@else@&gt;
+		
+			&lt;font color="red"&gt;ERROR: &lt;@=<b>xml.getErrorCause()</b>@&gt;&lt;/font&gt;
+		
+		&lt;@endif@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>
+By first, after declaration, you've to open XML streaming. To do this you can use multiple methods:
+<ul>
+<li><code>openfromfile(string path)</code></li>
+<li><code>openfromfile(File file)</code></li>
+<li><code>openfrombuffer(string content)</code></li>
+<li><code>openfrombuffer(StringBuffer content)</code></li>
+<li><code>openfromstream(InputStream stream)</code></li>
+<li><code>openfromurl(string address)</code></li>
+<li><code>openfromurl(URL address)</code></li>
+</ul>
+
+<br>These methods return <code>true</code> if XML has been opened, otherwise <code>false</code>.
+<br><br>According to <code>Document</code> interface you can check for errors, calling method <code>getErrorCause()</code> .
+<br><br>You cannot have to "close" <code>xmldocument</code> .
+<br><br>Once XML is opened, you can retrieve tags and related content and attributes
+ by using multiple methods according to <code>Document</code> interface.  
+<br><br>Now we focus on some additional (and useful) methods:
+
+<ul>
+<li><code>Node getFirstElementByTagName(rootNode,nodeName)</code>
+<br>will return (null if not exists) first tag with <code>nodeName</code> name and child of 
+<code>rootNode</code> node.</li>
+<li><code>String getcontent(rootNode,nodeName)</code>
+<br>will return ('blank' if node does not exists) value of first tag with <code>nodeName</code> name and child of 
+<code>rootNode</code> node.
+</li>
+<li><code>String getpar(rootNode,nodeName,attributeName)</code>
+<br>will return ('blank' if node or attribute does not exist) value of <code>attributeName</code> attribute into first tag with <code>nodeName</code> name and child of 
+<code>rootNode</code> node.
+</li>
+<li><code>String getcontent(node)</code>
+<br>will return ('blank' if node does not exist) value of specified <code>Node node</code>
+</li>
+<li><code>String getpar(node,attributeName)</code>
+<br>will return ('blank' if node or attribute does not exist) value of <code>attributeName</code> 
+attribute into specified <code>Node node</code>.
+</li>
+<li><b><code>String getAllXmlContent()</code> will return as <code>string</code> all xml content 
+of current <code>xmldocument</code></b></li>
+<li><code>Node[] getElementsByTagName(rootNode,nodeName)</code>
+<br>will return (null if not exist) a <code>Node[]</code> array tags with <code>nodeName</code> name 
+and child of <code>rootNode</code> node.</li>
+</ul>
+
+<br><br>Please remember that with <code>xmldocument</code> you'll already be enabled to modify 
+current xml document, but we will not discuss this here.
+<br><br>
+
+</li>
+
+<li><a name="sub.xmlbuilder"></a><b><code>xmlbuilder</code></b>
+<br>With <code>xmlbuilder</code> component you can quickly create <code>xml</code> sequences.
+<br><br>XLEWS provides a lot of useful methods to do it. Methods are very easy to understand 
+and we suggest you to see Javadoc documentation 
+about <code>com.xXLEM.xml.XLEMXMLBuilder</code> class.
+<br><br>XML Builder run on server memory so be careful when producing very long xml sequences.
+<br><br>At this moment XML Builder does not perform checking about tag, content and attributes
+sequence, but is only providing useful building, escaping and formatting methods to
+help and speed up your  xml producing. 
+<br><br>To better understand xml building with XLEWS now we  dynamically reproduce 
+demo books xml file used on previous examples.
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim books as stringarray@&gt;
+	&lt;@set books=new String[] {
+		"498756|Antony and Cleopatra|William Shakespeare|"+
+		"SKSPX012|USD|35.00",
+		"591287|Divina Commedia|Dante Alighieri|"+
+		"ALDNY451|USD|24.50"
+	}@&gt;
+
+	&lt;@dim <b>xml as xmlbuilder</b>@&gt;
+	&lt;@call <b>xml.init</b>("1.0","UTF-8")@&gt;
+	&lt;@call <b>xml.newcomment</b>("Automatic generated with xmlbuilder")@&gt;
+	&lt;@call <b>xml.newtag</b>("books")@&gt;
+	
+	&lt;@dim bki as stringarray@&gt;
+	
+	&lt;@forall String book in books@&gt;
+	
+		&lt;@set bki=book.split("[|]")@&gt;
+		
+		&lt;@call xml.newtag("book")@&gt;
+			&lt;@call xml.newtag("id",bki[0])@&gt;
+			&lt;@call xml.newtag("title",bki[1])@&gt;
+			
+			&lt;@call <b>xml.opentag</b>("price")@&gt;
+				&lt;@call <b>xml.setpar</b>("currency",bki[4])@&gt;
+				&lt;@call <b>xml.endtag</b>(false)@&gt;
+				&lt;@call <b>xml.setcontent</b>(bki[5])@&gt;
+			&lt;@call xml.<b>closetag</b>("price")@&gt; 
+			
+			&lt;@call xml.newtag("author")@&gt;
+				&lt;@call xml.newtag("name",bki[2])@&gt;
+				&lt;@call xml.newtag("id",bki[3])@&gt;
+			&lt;@call xml.closetag("author")@&gt;
+			
+		&lt;@call xml.closetag("book")@&gt;
+		
+	
+	&lt;@endforall@&gt;
+	
+	
+	&lt;@call xml.closetag("books")@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@// !!! Please put not space(s) or new line(s) between ...@&gt;
+&lt;@// ... "content" tag and "&lt;?xml?&gt;" tag ...@&gt;
+&lt;@// ... otherwise with some browser your  XML will not work properly!!!!@&gt;
+&lt;@content type="text/xml" encoding="UTF-8"@&gt;&lt;@=<b>xml.tostring</b>()@&gt;
+	
+&lt;@/content@&gt;
+</code></pre>
+<br>You can already skip <code>init(...)</code> method if you wan have only xml tags.
+<br><br>With <code>tostring()</code> or <code>toString()</code> method 
+you can retrieve xml tag sequence as <code>string</code>.
+<br><br>Finally please note that in this case page content type has been declared as
+<b><code>"text/xml"</code></b>!!!
+<br><br>The output page result will appear like:
+<code><pre>
+
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- Automatic generated with xmlbuilder--&gt;
+&lt;books&gt;
+ &lt;book&gt;
+	 &lt;id&gt;498756&lt;/id&gt;
+	&lt;title&gt;Antony and Cleopatra&lt;/title&gt;
+	&lt;price currency="USD"&gt;35.00&lt;/price&gt;
+	&lt;author&gt;
+		&lt;name&gt;William Shakespeare&lt;/name&gt;
+		&lt;id&gt;SKSPX012&lt;/id&gt;
+	&lt;/author&gt;
+ &lt;/book&gt;
+	
+ &lt;book&gt;
+	 &lt;id&gt;591287&lt;/id&gt;
+	&lt;title&gt;Divina Commedia&lt;/title&gt;
+	&lt;price currency="USD"&gt;24.50&lt;/price&gt;
+	&lt;author&gt;
+		&lt;name&gt;Dante Alighieri&lt;/name&gt;
+		&lt;id&gt;ALDNY451&lt;/id&gt;
+	&lt;/author&gt;
+ &lt;/book&gt;
+
+&lt;/books&gt;
+</pre></code>
+</li>
+
+
+
+<li><a name="sub.xmlvalidator"></a><b><code>xmlvalidator</code></b><br>
+If you're working with dynamic or third parties provided xml streaming and you should 
+like to validate it using a <a href="http://www.w3.org/2001/XMLSchema">schema</a>, 
+<code>xmlvalidator</code> can be used.<br><br>
+This component is fully compliant with <code>javax.xml.validation.Validator</code> class.<br><br>
+Validation process is made using two basic elements:
+<ul>
+<li><code>xml</code> source (local file or url)</li>
+<li><code>schema</code> (local file or url)</li>
+</ul>
+
+<br>Once defined, you must call <code>validate()</code> method of current 
+<code>xmlvalidator</code> component.
+
+<br><br>You can reuse <code>validator</code> component more than once re-defining 
+<code>source</code> and <code>schema</code>.
+
+<br><br>Please see related javadoc of <code>com.xXLEM.xml.XLEMXMLValidator</code>
+for more info.
+
+<br><br><b>The validation process may throw exceptions/errors that you've to manage!!!</b>
+
+<br><br>The following example better explains validation process:
+
+<pre><code>
+Suppose you've defined schema file "resources/validator.dtd"
+<hr> &lt;?xml version="1.0"?&gt;
+ &lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xsd:element name="hello" type="xsd:string"/&gt;
+ &lt;/xsd:schema&gt;
+<hr>
+Now we'll show how to validate two xml static files:
+
+ "resource/xml_ok.xml"
+<hr> &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ &lt;hello&gt;Hello World&lt;/hello&gt;
+<hr>
+ and "resource/xml_ko.xml"
+<hr> &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;message&gt;
+   &lt;hello&gt;Hello World&lt;/hello&gt;
+  &lt;/message&gt; 
+<hr>
+</code></pre>
+ <br>This is the <i><code>.xlem</code></i> validator page: 
+
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim xmlSources as stringarray@&gt;
+	&lt;@set xmlSources=new String[] {
+		"resources/xml_ok.xml",
+		"resources/xml_ko.xml"
+		}@&gt;
+		
+	&lt;@dim validator as <b>xmlvalidator</b>@&gt;	
+	&lt;@call validator.<b>setschemaasfile</b>(toURI("resources/validator.xsd"))@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS XML Validator&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		Validating xml sources:&lt;hr&gt;
+		
+		&lt;@forall String src in xmlSources@&gt;
+		
+	Validating &lt;b&gt;&lt;@=src@&gt;&lt;/b&gt;...
+	
+	&lt;br&gt;... result is
+	
+&lt;@try@&gt;	
+	&lt;@call validator.<b>setsourceasfile</b>(toURI(src))@&gt;
+	&lt;@call validator.<b>validate()</b>@&gt;
+	&lt;font color="green"&gt;&lt;b&gt;ok&lt;/b&gt;&lt;/font&gt;
+&lt;@/try@&gt;
+&lt;@catch Exception@&gt;
+	&lt;font color="red"&gt;&lt;@=<b>exception.getMessage</b>()@&gt;&lt;/font&gt;
+&lt;@endcatch@&gt;
+	&lt;hr&gt;
+				
+		&lt;@/forall@&gt;
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+<br>and result will be:
+
+<pre><code>
+ Validating xml sources:<hr>
+	Validating <b>resources/xml_ok.xml</b>...
+	... result is <font color="green"><b>ok</b></font><hr>
+	Validating <b>resources/xml_ko.xml</b>...
+	... result is <font color="red">cvc-elt.1: Cannot find the declaration of element 'message'.</font><hr>
+</code></pre>
+
+</li>
+
+</ul>
+
+</p>
+
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="XslEngine"></a>
+<h2>XSL Engine</h2>
+<p>
+XLEWS provides the following component to accomplish xsl integration into your 
+dynamic <code><i>.xlem</i></code> applications
+
+<pre><code>
+
+  xsltransformer
+
+</code></pre>
+
+<br>With <code>XSL transformer</code> you might better separate data from rendering.
+
+<br><br>XML/XSL is a good solution for mobile platform developement (or generally when 
+you have to provide mutliple devices rendering using the same data set ).
+
+<br><br>You have to define a <code>xml source</code> (from buffer, file or url) and 
+related <code>xsl</code> "mask" (buffer, file or url)
+
+<br><br>You can find more info about XSL directly at W3C related page 
+<a href="http://www.w3.org/TR/xslt">http://www.w3.org/TR/xslt</a>
+
+<br><br>You can find more info about <code>xsltransformer</code> by seeing <code>XLEWS javadoc</code>
+and related Java™ class <code>com.xXLEM.xsl.XLEMXSLTransformer</code> 
+
+<br><br>To better understand the component, please follow the example:
+
+<pre><code>
+Now we'll show the xml book list (resources/demo.xml) as html
+
+This is the xsl file: (resources/xsl-books.xsl)<hr>
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;xsl:stylesheet version="1.0" 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+&gt;
+	
+&lt;xsl:output method="html" 
+	indent="yes" 
+	doctype-public="-//W3C//DTD HTML 4.01//EN" 
+/&gt;	
+
+&lt;xsl:template match="books"&gt;
+ &lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Available books&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+   &lt;h1&gt;Available books:&lt;/h1&gt;
+  &lt;ul&gt;&lt;xsl:apply-templates/&gt;&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="book"&gt;
+		&lt;li&gt;&lt;b&gt;&lt;xsl:value-of select="title"/&gt;&lt;/b&gt; 
+		author: &lt;xsl:value-of select="author/name"/&gt;&lt;/li&gt;
+&lt;/xsl:template&gt;
+	
+&lt;/xsl:stylesheet&gt;
+</code></pre>
+
+<br>This is the <i>xmltransformer.xlem</i> page:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim transf as <b>xsltransformer</b>@&gt;
+	&lt;@dim xsl_error as string@&gt;
+	&lt;@dim res as string@&gt;
+	
+	&lt;@try@&gt;
+		&lt;@call transf.<b>setsourceasfile</b>(toURI("resources/demo.xml"))@&gt;
+		&lt;@call transf.<b>setstyleasfile</b>(toURI("resources/xsl-books.xsl"))@&gt;
+		&lt;@set res=transf.<b>transform()</b>@&gt;
+	&lt;@/try@&gt;	
+	&lt;@catch Exception@&gt;
+		&lt;@set xsl_error=exception.getMessage()@&gt;
+	&lt;@/catch@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+&lt;@if !isblank(res)@&gt;
+	&lt;@=res@&gt;
+&lt;@else@&gt;	
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XSL Transnformer error&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		Error transforming XSL= 
+		&lt;font color="red"&gt;&lt;br&gt;
+		&lt;b&gt;&lt;@=xsl_error@&gt;&lt;/b&gt;&lt;hr&gt;
+		&lt;@=transf.<b>geterror()</b>@&gt;
+		&lt;/font&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@endif@&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+
+and the ouptput result will be:
+
+<code><pre>
+<h1>Available books:</h1><ul>
+<li><b>Antony and Cleopatra</b> 
+		author: William Shakespeare</li>
+<li><b>Divina Commedia</b> 
+		author: Dante Alighieri</li>
+</ul>
+</pre></code>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="RequestResponse"></a>
+<h1>User (http) request and response handling</h1>
+
+<p>
+HTTP protocol is based on http request and response.
+<br><br>XLEM developers can interact with these objects using:
+<pre><code><ul>
+<li><a href="#sub-request">request</a></li>
+<li><a href="#sub-querystring">querystring</a></li>
+<li><a href="#sub-response">response</a></li>
+</ul></code></pre>
+
+These components are automatically provided as "instances" inside any <i><code>.xlem</code></i> page.
+
+<a name="sub-request"></a>
+<br><br>The <b><code>request</code></b> component is based on java class
+<code>com.xXLEM.http.XLEMHTTPRequest</code> and implements
+<code><a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html">javax.servlet.http.HttpServletRequest</a></code>.
+<br><br>In addition to all interface provided methods, to speed up your
+data checking and retrieving, you can also use:
+
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr>
+	<td><code>getheaders()</code></td>
+	<td>return a String Array containing name of all current user request http headers</td>
+</tr>
+<tr>
+	<td><code>getheader(String headerName)</code></td>
+	<td>tries to return request header name <code>headerName</code> as <code>string</code>; 
+	if it does not exist will return <code>"" (empty string)</code></td>
+</tr>
+<tr>
+	<td><code>toboolean(String rqParam)</code></td>
+	<td>tries to return request parameter <code>rqParam</code> as <code>boolean</code>; 
+	if does not exist or it is not convertible, will return <code>false</code></td>
+</tr>
+<tr>
+	<td><code>todouble(String rqParam)</code></td>
+	<td>tries to return request parameter <code>rqParam</code> as <code>double</code>; 
+	if does not exist or it is not convertible will return <code>0.0d</code></td>
+</tr>
+<tr>
+	<td><code>tofloat(String rqParam)</code></td>
+	<td>tries to return request parameter <code>rqParam</code> as <code>float</code>; 
+	if it does not exist or it is not convertible, will return <code>0.0f</code></td>
+</tr>
+<tr>
+	<td><code>tointeger(String rqParam)</code></td>
+	<td>tries to return request parameter <code>rqParam</code> as <code>integer</code>; 
+	if it does not exist or  it is not convertible will return <code>0</code></td>
+</tr>	
+<tr>
+	<td><code>tolong(String rqParam)</code></td>
+	<td>tries to return request parameter <code>rqParam</code> as <code>long</code>; 
+	if it does not exist or it is not convertible will return <code>0L</code></td>
+</tr>
+<tr>
+	<td><code>tostring(String rqParam)</code></td>
+	<td>tries to return request parameter <code>rqParam</code> as <code>string</code>; 
+	if it does not exist or it is not convertible will return <code>""</code> (empty string)</td>
+</tr>
+<tr>
+	<td><code>decode(String value,String encoding)</code></td>
+	<td>tries to return a <code>value</code> <code>"url-decoded"</code> 
+	with specified <code>encoding</code>  
+	if it is  not possible <code>request</code> will return the same <code>value</code>
+	parameter</td>
+</tr>
+<tr>
+	<td><code>decode(String value)</code></td>
+	<td> = <code>decode(String value,"UTF-8")</code></td>
+</tr>	
+<tr>
+	<td><code>encode(String value,String encoding)</code></td>
+	<td>tries to return a <code>value</code> <code>"url-encoded"</code> 
+	with specified <code>encoding</code>  
+	if it is not possible <code>request</code> will return the same <code>value</code>
+	parameter</td>
+</tr>
+<tr>
+	<td><code>encode(String value)</code></td>
+	<td> = <code>encode(String value,"UTF-8")</code></td>
+</tr>	
+</table>
+
+<br>With methods: <code>tobooleanarray(rqParam),todoublearray(...),tofloatarray(...),
+tointegerarray(...),tolongarray(...),tostringarray(...)</code> you can try to retrieve request
+parameters as array of related "type"; if rqParam not found <code>null</code> XLEWS
+will return <code>null</code>
+
+<br><br><b>Please be careful because request parameter names are "case sensitive";
+header names are case insensitive!!!
+</b>
+
+
+<a name="sub-querystring"></a>
+<br><br>The <b><code>querystring</code></b> component is based on java class
+<code>com.xXLEM.http.XLEMQueryString</code> and automatically provides
+a powerful method to retrieve parameters from query string:
+
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr>
+	<td><code>toboolean(String query parameter)</code></td>
+	<td>tries to return request parameter <code>qryParam</code> as <code>boolean</code>; 
+	if it does not exist or it is not convertible will return <code>false</code></td>
+</tr>
+<tr>
+	<td><code>todouble(String qryParam)</code></td>
+	<td>tries to return query parameter <code>qryParam</code> as <code>double</code>; 
+	if it does not exist or it is not convertible will return <code>0.0d</code></td>
+</tr>
+<tr>
+	<td><code>tofloat(String qryParam)</code></td>
+	<td>tries to return query parameter <code>qryParam</code> as <code>float</code>; 
+	if it does not exists or it is not convertible will return <code>0.0f</code></td>
+</tr>
+<tr>
+	<td><code>tointeger(String qryParam)</code></td>
+	<td>tries to return query parameter <code>qryParam</code> as <code>integer</code>; 
+	if it does not exist or it is not convertible will return <code>0</code></td>
+</tr>	
+<tr>
+	<td><code>tolong(String qryParam)</code></td>
+	<td>tries to return query parameter <code>qryParam</code> as <code>long</code>; 
+	if it does not exist or it is not convertible will return <code>0L</code></td>
+</tr>
+<tr>
+	<td><code>tostring(String qryParam)</code></td>
+	<td>tries  to return query parameter <code>qryParam</code> as <code>string</code>; 
+	if it does not exist or it is not convertible will return <code>""</code> (empty string)</td>
+</tr>	
+</table>
+
+<br><b>Query  parameter names are "case insensitive".</b>
+<br><br>To better manage your querystring, please remember that you can use the 
+method <code>request.getQueryString()</code> and you'll have back a string representing
+current user querystring
+
+<a name="sub-response"></a>
+<br><br>The <b><code>response</code></b> component is based on java class
+<code>com.xXLEM.http.XLEMHTTPResponse</code> and implements
+<code><a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletResponse.html">javax.servlet.http.HttpServletResponse</a></code>.
+<br><br>In addition to provided interface methods you can use also:
+<br><code>response.redirect(stirng url)</code> (equivalent to 
+<code>response.sendRedrect(...)</code> method)
+
+<br><b>Redirect operations are only allowed in 
+<code>&lt;@page@&gt;...&lt;/@page@&gt;</code></b> section.
+
+<br><br><br>Now let us provide a simple request and response example:
+
+<pre><code>
+Suppose to have two <i>.xlem</i> pages:
+<ul><li>login.xlem</li><li>login_welcome.xlem</li></ul></code>
+</pre>
+
+First (<code>login.xlem</code>)page simply shows a form where user put username (text) and password.
+<br>The other (<code>login_welcome.xlem</code>) will process form data and if is user 
+is 'mgshow' and password is = '123456' then shows welcome message otherwise will redirect
+to <code>login.xlem</code> page adding user in querystring.
+<br>The <code>login.xlem</code> page fill the retrieved user name in querystring inside html
+user field.
+
+<br><br><code>login.xlem</code> page source code:
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim currentUser as string@&gt;
+	&lt;@set currentUser=<b>querystring.tostring</b>("usr")@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Login Form example&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+	 &lt;div align="center"&gt;
+	 	&lt;h1&gt;Login Form&lt;/h1&gt;
+	 	&lt;form name="loginForm" method="post" 
+	 	action="login_welcome.xlem"&gt;
+	 	&lt;table&gt;
+	 	&lt;tr&gt;&lt;td&gt;User:&lt;/td&gt;&lt;/tr&gt;
+	 	&lt;tr&gt;&lt;td&gt;
+	 	&lt;input type="text" name="username" 
+	 		value="&lt;@=htmlformat(currentUser)@&gt;"
+	 	&lt;/td&gt;&lt;/tr&gt;
+	 	&lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;/tr&gt;
+	 	&lt;tr&gt;&lt;td&gt;&lt;input type="password" 
+	 	name="userpassword"&gt;&lt;/td&gt;&lt;/tr&gt;
+	 	&lt;tr&gt;&lt;td align="right"&gt;
+	 		&lt;input type="submit" name="btLogin" 
+	 		value="Login..."&gt;&lt;/td&gt;&lt;/tr&gt;
+	 	&lt;/table&gt;
+	 	&lt;/form&gt;
+	 &lt;/div&gt;	
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br><br><code>login_welcome.xlem</code> page source code:
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim uname,upass as string@&gt;
+	&lt;@set uname=<b>request.tostring</b>("username")@&gt;
+	&lt;@set upass=<b>request.tostring</b>("userpassword")@&gt;
+
+	&lt;@dim okDisplay as boolean@&gt;
+	&lt;@set okDisplay=("mgshow".equals(uname) && 
+		"123456".equals(upass))@&gt;
+	
+	&lt;@if !okDisplay@&gt;
+		&lt;@call <b>response.redirect</b>("login.xlem?usr="+
+		<b>request.encode</b>(uname))@&gt;
+	&lt;@/if@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+&lt;@if okDisplay@&gt;
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Welcome &lt;@=uname@&gt;&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+	 &lt;div align="center"&gt;
+	 	&lt;br&gt;&lt;br&gt;
+	 	Please Welcome &lt;b&gt;&lt;@=uname@&gt;&lt;/b&gt;,
+	 	&lt;br&gt;&lt;br&gt;Have a nice day !!!!
+	 	&lt;br&gt;&lt;br&gt;You've sent this headers:
+	 	&lt;@dim headers as stringarray@&gt;
+	 	&lt;@set headers=<b>request.getheaders</b>()@&gt;
+	 	&lt;@forall String header in headers@&gt;
+	 		&lt;hr&gt;&lt;@=header@&gt; = 
+	 		&lt;@=<b>request.getheader</b>(header)@&gt;
+	 	&lt;@endforall@&gt;
+	 	
+	 &lt;/div&gt;	
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+&lt;@/if@&gt;
+&lt;@/content@&gt;
+</code></pre>
+
+<br>In case of successful connection, page output should be like this:
+<pre align="center"><code>
+Please Welcome <b>mgshow</b>,
+
+Have a nice day !!!!
+
+You've sent this headers:
+<hr>host = localhost:8080
+<hr>user-agent = Mozilla/5.0 (Macintosh; 
+Intel Mac OS X 10.7; rv:8.0.1) 
+Gecko/20100101 Firefox/8.0.1
+<hr>accept = text/html,application/xhtml+xml,
+application/xml;q=0.9,*/*;q=0.8
+<hr>accept-language = en-us,en;q=0.5
+<hr>accept-encoding = gzip, deflate
+<hr>accept-charset = ISO-8859-1,utf-8;q=0.7,*;q=0.7
+<hr>connection = keep-alive
+<hr>referer = http://localhost:8080/lews41-examples/login.xlem
+<hr>content-type = application/x-www-form-urlencoded
+<hr>content-length = 52
+</code></pre>  
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="Sessions"></a>
+<h1>User (http) session handling</h1>
+<p>
+XLEWS provides  to developers <code>session</code> component that fully manages 
+http user session.
+<br><br>XLEWS links one session per current user to a data (or better "attributes") that 
+developers can  read (<code>get</code>) and write (<code>set</code>)
+to make persistent the info across multiple user requests.
+<br><br>This component is derived from Java™ class 
+<code>com.xXLEM.http.XLEMHTTPSession</code> that implements
+<a href="http://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpSession.html">javax.servlet.http.HttpSession</a>
+interface.
+<br><br><b>Unlike <code>.jsp</code>, any <i>XLEM</i>, by default, does not activate
+user session management !!!!</b>
+<br><br>To activate http user session management you've to specify into 
+<b><code>&lt;@page@&gt;</code></b> tag the following attributes:
+
+<pre><code>
+ <b>&lt;@page</b> version="1.0"
+
+	<b>session</b>="true" [if not present = "false"]
+
+	<b>createonfail</b> = "true/false" (if not present ="true")
+
+ <b>@&gt;</b>
+ 
+</code></pre>
+
+<br>With <code>createonfail="true"</code> you'll force XLEWS to create session if it does  not already exists.
+
+<br><br>Once activated, you'll be enabled to use <code>session</code> instance inside your
+<code>.xlem</code> page. <b>If not, every call over <code>session</code> instance will return a
+<code>null pointer exception</code>: be careful!!!!</b>
+
+<br><br>In addition with all interface provided methods, to speed up your
+data checking and retrieving, you can also use:
+
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr>
+	<td><code>getid()</code></td>
+	<td>return the session unique id as string</td>
+</tr>
+<tr>
+	<td><code>exists(String sessionAttribute)</code></td>
+	<td>return <code>true</code> if <code>sessionAttribute</code> exists,
+	otherwise <code>false</code></td>
+</tr>
+<tr>
+	<td><code>getboolean(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>boolean</code>; 
+	if it does not exist or it is not convertible will return <code>false</code></td>
+</tr>
+<tr>
+	<td><code>getdate(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>date</code>
+	(<code>com.xXLEM.datatype.XLEMDate</code>); 
+	<b>if it does not exist or it is not convertible will return <code>null</code></b></td>
+</tr>
+<tr>
+	<td><code>getdouble(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>double</code>; 
+	if it does not exist or it is not convertible, will return <code>0.0d</code></td>
+</tr>
+<tr>
+	<td><code>getfloat(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>float</code>; 
+	if it does not exist or it is not convertible will return <code>0.0f</code></td>
+</tr>
+<tr>
+	<td><code>getinteger(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>integer</code>; 
+	if it does not exist or it is not convertible, will return <code>0</code></td>
+</tr>	
+<tr>
+	<td><code>getlong(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>long</code>; 
+	if it does not exist or it is not convertible will return <code>0L</code></td>
+</tr>
+<tr>
+	<td><code>getstring(String sAttr)</code></td>
+	<td>tries to return session attribute <code>sAttr</code> as <code>string</code>; 
+	if it does not exist or it is not convertible will return <code>""</code> (empty string)</td>
+</tr>
+<tr>
+	<td><code>get(String sAttr)</code></td>
+	<td>returns session attribute <code>sAttr</code> as <code>java.lang.Object</code>; 
+	if it does not exist or it is not convertible will return <code>null</code></td>
+</tr>
+
+
+<tr>
+	<td><code>setboolean(String sAttr, boolean value)</code></td>
+	<td>assigns <code>boolean</code>
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>setdouble(String sAttr, double value)</code></td>
+	<td>assigns <code>double</code>
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>setdate(String sAttr, date value)</code></td>
+	<td>assigns <code>date</code> (<code>com.xXLEM.datatype.XLEMDate</code>)
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>setfloat(String sAttr, float value)</code></td>
+	<td>assigns <code>float</code>
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>setinteger(String sAttr, integer value)</code></td>
+	<td>assigns <code>integer</code>
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>setlong(String sAttr, long value)</code></td>
+	<td>assigns <code>long</code>
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>setstring(String sAttr, string value)</code></td>
+	<td>assigns <code>string</code>
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+<tr>
+	<td><code>set(String sAttr, java.lang.Object value)</code></td>
+	<td>assigns "some"
+	<code>value</code> to session attribute <code>sAttr</code></td>
+</tr>
+
+</table>
+
+<br>With methods: <code>getbooleanarray(sAttr),getdoublearray(...),getfloatarray(...),
+getintegerarray(...),getlongarray(...),getstringarray(...)</code> you can try to retrieve 
+session attributes as array of related "type"; if sAttr not found <code>null</code> XLEWS
+will return <code>null</code>
+
+<br><br><b>Please be careful because session attribute names are "case sensitive" !!!
+</b>
+
+<br><br>Now's the time for classic "page hint" example to better explain user session handling:
+<pre><code>
+&lt;@page version="1.0" <b>session</b>="true" <b>createonfail</b>="true"@&gt;
+
+	&lt;@dim hints as integer@&gt;
+	&lt;@set hints=<b>session.getinteger</b>("MY_HINTS")@&gt;
+
+&lt;@/page@&gt;
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS User Session Management&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		You're visited this page &lt;@=++hints@&gt; times!
+		&lt;@call <b>session.setinteger</b>("MY_HINTS",hints)@&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+<br>Depending on your browser settings, every page refresh counter will be incremented;
+if you'll close and re-open browser (or open different browser)
+on the same page url, counter should be resetted.
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+
+<a name="ApplicationData"></a>
+<h1>Application Data Management</h1>
+<p>
+XLEWS provides <code>application</code> component to developers that fully manage 
+current web application.
+<br><br><b>Please consider <code>application</code> as "shared" session across all users!</b>
+
+<br><br>XLEWS provides only one <code>application</code> instance per application.
+
+<br><bR>This <code>application</code> can store  data (or better "attributes") that 
+developers can  read (<code>get</code>) and write (<code>set</code>)
+to make persistent info across all user requests.
+<br><br>This component is derived from Java™ class 
+<code>com.xXLEM.http.XLEMServletContext</code> that implements
+<a href="http://docs.oracle.com/javaee/6/api/javax/servlet/ServletContext.html">javax.servlet.ServletContext</a>
+interface.
+
+<br><br>In addition with all interface provided methods, to speed up your
+data checking and retrieving, you can also use:
+
+<table>
+<tr><th>Method</th><th>Description</th></tr>
+<tr>
+	<td><code>exists(String applicationAttribute)</code></td>
+	<td>return <code>true</code> if <code>applicationAttribute</code> exists,
+	otherwise <code>false</code></td>
+</tr>
+<tr>
+	<td><code>getboolean(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>boolean</code>; 
+	if it does not exist or it is not convertible will return <code>false</code></td>
+</tr>
+<tr>
+	<td><code>getdate(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>date</code>
+	(<code>com.xXLEM.datatype.XLEMDate</code>); 
+	<b>if it does not exist or it is  not convertible will return <code>null</code></b></td>
+</tr>
+<tr>
+	<td><code>getdouble(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>double</code>; 
+	if it does not exist or it is  not convertible will return <code>0.0d</code></td>
+</tr>
+<tr>
+	<td><code>getfloat(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>float</code>; 
+	if it does not exist or it is not convertible will return <code>0.0f</code></td>
+</tr>
+<tr>
+	<td><code>getinteger(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>integer</code>; 
+	if it does not exist or it is  not convertible will return <code>0</code></td>
+</tr>	
+<tr>
+	<td><code>getlong(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>long</code>; 
+	if it doesnot exists or it is not convertible will return <code>0L</code></td>
+</tr>
+<tr>
+	<td><code>getstring(String appAttr)</code></td>
+	<td>tries to return application attribute <code>appAttr</code> as <code>string</code>; 
+	if it does not exist or it is not convertible will return <code>""</code> (empty string)</td>
+</tr>
+<tr>
+	<td><code>get(String appAttr)</code></td>
+	<td>returns application attribute <code>appAttr</code> as <code>java.lang.Object</code>; 
+	if it does not exist or it is not convertible will return <code>null</code></td>
+</tr>
+
+
+<tr>
+	<td><code>setboolean(String appAttr, boolean value)</code></td>
+	<td>assigns <code>boolean</code>
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>setdouble(String appAttr, double value)</code></td>
+	<td>assigns <code>double</code>
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>setdate(String appAttr, date value)</code></td>
+	<td>assigns <code>date</code> (<code>com.xXLEM.datatype.XLEMDate</code>)
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>setfloat(String appAttr, float value)</code></td>
+	<td>assigns <code>float</code>
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>setinteger(String appAttr, integer value)</code></td>
+	<td>assigns <code>integer</code>
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>setlong(String appAttr, long value)</code></td>
+	<td>assigns <code>long</code>
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>setstring(String appAttr, string value)</code></td>
+	<td>assigns <code>string</code>
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+<tr>
+	<td><code>set(String appAttr, java.lang.Object value)</code></td>
+	<td>assigns "some"
+	<code>value</code> to application attribute <code>appAttr</code></td>
+</tr>
+
+</table>
+
+<br>With methods: <code>getbooleanarray(appAttr),getdoublearray(...),getfloatarray(...),
+getintegerarray(...),getlongarray(...),getstringarray(...)</code> you can try to retrieve 
+application attributes as array of related "type"; if appAttr not found <code>null</code> XLEWS
+will return <code>null</code>
+
+<br><br><b>Please be careful because application attribute names are "case sensitive" !!!
+<br><br>Application data (attributes) will be persisted during your <code>.xlem</code> 
+application lifeciclye.
+</b>
+
+<br><br>Now's the time to extend previous "page hint" example to better explain 
+application data management and put focus on difference with single user session handling:
+<pre><code>
+
+&lt;@page version="1.0" session="true" createonfail="true"@&gt;
+
+	&lt;@dim hints as integer@&gt;
+	&lt;@set hints=session.getinteger("MY_HINTS")@&gt;
+
+	&lt;@dim globalHints as integer@&gt;
+	&lt;@set globalHints=1+<b>application.getinteger</b>("GLOBAL_HINTS")@&gt;
+	&lt;@call <b>application.setinteger</b>("GLOBAL_HINTS",globalHints)@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Application Data Management&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		You're visited this page &lt;@=++hints@&gt; times.
+		&lt;br&gt;Total visits &lt;@=globalHints@&gt;.
+		&lt;@call session.setinteger("MY_HINTS",hints)@&gt;
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+<br>Depending on your browser settings, every page refresh counters will be incremented;
+if you'll close and re-open browser (or open different browser)
+on the same page url, <b>only "personal user " counter should be resetted; the global 
+counter not!!!</b>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="JavaCode"></a>
+<h1>Putting Java™ code inside <i>XLEM</i></h1>
+<p>
+<i>XLEM</i> syntax and tags is very easy and powerful. 
+However you should need to directly put Java™ scripting.
+<br><br>XLEWS allows you to mix and switch from JAVA™ code to XLEM tags simply 
+calling <b><code>&lt;@java@&gt;</code> your script<code>&lt;@/java@&gt;</code></b> sequence.
+<br><br>You can share variables, instances and so on... : this make <i>XLEM</i> 
+very extensible and programmable!!!
+<br><br><b>You can  write output to the final user 
+using <code>out</code> provided instance.</b>
+<br><br>Let us to show this brief example:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim i as integer@&gt;
+	&lt;@set i=4@&gt;
+	&lt;@dim firstName as string@&gt;
+	&lt;@set firstName="John"@&gt;
+	
+	<b>&lt;@java@&gt;
+	
+		int y=i*10;
+		String lastName="Doe";
+	
+	&lt;@/java@&gt;</b>
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Putting Java code...&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		Hello &lt;@=firstName@&gt; &lt;@=lastName@&gt; !
+		&lt;hr&gt;
+		
+		<b>&lt;@java@&gt;
+		
+			out.write(i+" + "+y+" = "+(i+y));
+		
+		&lt;@/java@&gt;</b>
+
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>and the page output will be:
+<pre><code>
+Hello John Doe !<hr>4 + 40 = 44
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="CustomFunctions"></a>
+<h1>Custom Functions</h1>
+<p>
+XLEWS allows you to define custom functions inside any <i>XLEM</i>.
+<br><br>You must use the <b><code>&lt;@jfun@&gt;</code></b> tag.
+<pre><code>
+
+&lt;@jfun returnJavaType functionName (arguments) [throws ...]{
+
+	... Java™ code ...
+
+}@&gt;
+
+</code></pre>
+
+To call and use your functions you can use the <b><code>&lt;@call@&gt;</code></b> tag,
+assign returned function value to a specified variable using the 
+<b><code>&lt;@set@&gt;</code></b> tag or directly put result (if available) with
+<b><code>&lt;@=@&gt;</code></b> tag.
+
+<br><br>You can put <b><code>&lt;@jfun@&gt;</code></b> tag in any tag sequence of current
+<i>XLEM</i> (in both <code>page</code> and 
+<code>content</code> section). XLEWS parser will reallocate it before compile.
+
+<br><br><b>Custom functions will be located outside the 
+"running" method of <i>XLEM</i> so you cannot directly use 
+<code>session, application, out, request, response</code> (and so on...). You 
+have to pass it as arguments if you need to use someone of this !!!</b>
+
+<br><br>Please follow this example:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	<b>&lt;@jfun double average(int a,int b) {
+		return (double) (a+b)/2;
+	}@&gt;</b>
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Custom Functions&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		
+		&lt;@=<b>hello</b>("Mark Twain")@&gt;
+
+		<b>&lt;@jfun String hello(String name) {
+			return "Hello &lt;b&gt;"+name+"&lt;/b&gt; !";
+		}@&gt;</b>
+		
+		&lt;@dim res as double@&gt;
+		&lt;@set res=<b>average</b>(2,7)@&gt;
+		&lt;br&gt;
+		Average between 2 and 7 is &lt;@=res@&gt;
+		&lt;@call <b>sayGoodbye</b>(out)@&gt;
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+<b>&lt;@jfun void sayGoodbye(JspWriter writer) throws Exception{
+	writer.println(
+	"&lt;hr&gt;&lt;hr&gt;Au revoir!&lt;hr&gt;&lt;hr&gt;");</b>
+}@&gt;
+
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>This will be the output result:
+<pre><code>
+Hello <b>Mark Twain</b> !<br>
+Average between 2 and 7 is 4.5<hr><hr>Au revoir!<hr><hr>
+
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="ImportAndExtend"></a>
+<h1>Importing and extending XLEWS with Java ™ Packages</h1>
+<p>
+Java™ is an Object Programming Language, extensible with standard or custom libraries.
+<br><br><i>XLEM</i> is a mix result between:
+<ul>
+<li>standard packages (<code>java.io.*</code> etc...)</li>
+<li>jsp/servlet packages (<code>javax.servlet.*</code> etc...)</li>
+<li>XLEWS packages (<code>com.xXLEM.lews.*</code> etc...)</li>
+</ul>
+
+By default these libraries are automatically declared and imported into
+<i>XLEM</i>.
+
+<br><br>If you need to import other packages, you can do it by using
+<b><code>&lt;@uselibrary@&gt;</code></b> tag.
+
+<br><br><b>Please correctly configure classpath of XLEWS Application Server otherwise you cannot
+reach targeted libraries and packages!!!</b>
+
+<br><br>You can  "import" packages (and classes) inside "<code>src</code>" folder of
+your current web application (don't forget XLEM XLEWS Application is very similar to 
+JSP/Servlet application ) 
+
+<br><br>You can put <b><code>&lt;@uselibrary@&gt;</code></b> tags in any tag sequence of current
+<i>XLEM</i> (in both <code>page</code> and 
+<code>content</code> section) or into a module (<code>.xlmh</code>).
+XLEWS parser will reallocate it on "top"  before compile.
+
+<br><br>This is a brief example:
+
+<br><br>Suppose you have somewhere this Java™ class (for example into your <code>src</code>
+folder of your web application)
+
+<pre><code>
+package test.xXLEM.beans;
+
+import java.io.Serializable;
+
+public class TestBean implements Serializable {
+
+	private static final long serialVersionUID =
+		 -5351748588779926998L;
+		 
+	public TestBean() {
+		super();
+	}	 
+		 
+	private String firstName;
+	private String lastName;
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String sayHello() {
+	return "Hello from "+firstName+" "+lastName+"!";
+	}
+	
+	
+}
+
+</code></pre>
+
+<br>this is the <i>XLEM</i>:
+
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	<b>&lt;@uselibrary java.util.Properties@&gt;</b>
+	&lt;@dim myProperties as javatype Properties@&gt;
+	&lt;@call myProperties=new Properties()@&gt;
+	&lt;@call myProperties.setProperty("first","First Property")@&gt;
+	&lt;@call myProperties.setProperty("last","Last Property")@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	
+	&lt;@dim test as javatype TestBean@&gt;
+	&lt;@set test=new TestBean()@&gt;
+	&lt;@call test.setFirstName("Paul")@&gt;
+	&lt;@call test.setLastName("Smith")@&gt;
+	<b>&lt;@uselibrary test.xXLEM.beans.TestBean@&gt;</b>
+
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Import and Extends Lews&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		&lt;@=test.sayHello()@&gt;
+		&lt;hr&gt;My properties are:
+		&lt;ul&gt;
+		&lt;li&gt;First: &lt;b&gt;
+		&lt;@=myProperties.getProperty("first")@&gt;&lt;/b&gt;
+		&lt;/li&gt;
+		&lt;li&gt;Last: &lt;b&gt;
+		&lt;@=myProperties.getProperty("last")@&gt;&lt;/b&gt;
+		&lt;/li&gt;
+		&lt;/ul&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+</code></pre>
+
+<br>... and this is the final output result:
+<pre><code>
+Hello from Paul Smith!
+<hr>My properties are:
+<ul><li>First: <b>First Property</b>
+</li><li>Last: <b>Last Property</b></li>
+</ul></code></pre>
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="Globals"></a>
+<h1>Global Variables</h1>
+<p>
+XLEWS creates only an instance for each <i>XLEM</i> inside Application Server Container.
+<br><br>Usually any <code>.xlem</code> page runs multiple times (multithreaded) the same
+method for each connected user.
+<br><br>You can define "global variables" to share data between instances (such as 
+<code>application</code> way, previously discussed).
+<br><br>This is the syntax (very similar to <code>@dim</code> statement):
+<pre><code>
+<b>&lt;@global</b> 
+	<i>varname</i> as [javatype] <i>vartype</i>
+<b>@&gt;</b>	
+</code></pre>
+<br>Each  <code>javatype</code> will be automatically instantiated.
+<br><br>You can put <b><code>&lt;@global@&gt;</code></b> tags in any tag sequence of current
+<i>XLEM</i> (in both <code>page</code> and 
+<code>content</code> section) or into a module (<code>.xlmh</code>).
+XLEWS parser will reallocate it outside "run" method, into a "global zone" before compile.
+
+<br><br>To change a global value you can use the same<code>@set</code> tag used for
+local variables.
+
+<br><br><b>Please be careful when using global variables and consider
+"synchronization" issues!!!</b>
+
+<br><br>This is an example:
+
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	<b>&lt;@global lastVisit as date@&gt;</b>
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Global Variables&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+	 
+	 &lt;@dim now as date@&gt;
+		This page has been visited <b>&lt;@=++counter@&gt;</b> times!
+		&lt;br&gt;Now is &lt;@=now.format("yyyy-mm-dd hh:mn:ss")@&gt;,
+		&lt;br&gt;last visit &lt;@=lastVisit.format("yyyy-mm-dd hh:mn:ss")@&gt;
+		<b>&lt;@set lastVisit=now@&gt;</b>
+		&lt;br&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+	
+	<b>&lt;@global counter as integer@&gt;</b>
+&lt;@/content@&gt;
+</code></pre>
+
+<br>A common challenge is to <b>share variables and functions between pages</b>.
+<br><br>To do it, we suggest to define a common module (<code>.xlmh</code>),
+usually inside <code>$APPLICATION_ROOT/dep/globals.xlmh</code>.<br>
+Every <code>.xlem</code> page that would  share these values and functions
+simply have to include with <code>@external</code> tag this module.
+
+<br><br>Let us better explain with a brief example:
+
+<ol>
+<li>Create a <code>/dep/globals.xlmh</code> module
+<pre><code>
+&lt;@// Define variables here...@&gt;
+  &lt;@dim maxResults as integer@&gt;
+  &lt;@set maxResults = 100@&gt;
+  
+  ... other declarations and settings...
+  
+  &lt;@jfun void connectToDatabase (int results) {
+   ....
+  }@&gt;
+  
+  ... other functions...
+ &lt;@// ... end of module@&gt; 
+    
+</code></pre>
+</li>
+
+<li>Create a first page<code>/page-name.xlem</code> page
+<br>Into a <code>@page</code> section (but already into <code>content</code>)
+import module and use variables and funcions...
+<pre><code>
+&lt;@page ... @&gt;
+
+  ... main declarations
+
+  &lt;@external src="dep/globals.xlmh" @&gt;
+
+  ... other declarations and settings...
+
+  &lt;@// implementation example... @&gt;
+  &lt;@dim results as integer@&gt;
+  &lt;@set results=querystring.tointeger("res")@&gt;
+  
+  &lt;@if results>maxResults@&gt;
+  	&lt;@set results=maxResults@&gt;
+  &lt;@endif@&gt;
+  
+  &lt;@call connectToDatabase(results)@&gt; 
+  
+  ... next code...    
+</code></pre>
+</li>
+
+<li>
+Repeat similar steps for each interested page
+</li>
+
+</ol>
+
+<br>With this best practise you'll  mantain common changes across modules and this is
+a very good solution for code refactoring.
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<a name="HttpClient"></a>
+<h1>Embedded Http Client</h1>
+<p>
+Nowadays we cannot limit a web application life cycle inside himself.
+<br><br>Your web application may be connected to a remote site to retrieve
+partial html contents such as header of footer section, xml or JSON streams to
+build rich Web 2.0 applications and so on.
+<br><br>XLEWS is providing the <code>XLEMHttpClient</code> component (
+<code>com.xXLEM.datatype.XLEMHttpClient</code>).
+
+<br><br><b>Every <code>XLEMHttpClient</code> call will be performed server side
+and not client side!!!</b>
+
+<br><br><code>XLEMHttpClient</code> offers static method to perform http get and post
+already using XML streaming.
+
+<table>
+<tr><th>Method</th><th>Throws</th><th>Description</th></tr>
+<tr>
+<td><code>LemasnysHttpClient.get(String url)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Perform a call on specified <code>url</code> assuming "UTF-8" as character econding
+and returns html content as string</td>
+</tr>
+
+<tr>
+<td><code>XLEMHttpClient.get(String url, String encoding)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Perform a call on specified <code>url</code> assuming <code>encoding</code> as character econding
+and returns html content as string</td>
+</tr>
+
+<tr>
+<td><code>XLEMHttpClient.get(String url, String encoding, Properties props)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Perform a call on specified <code>url</code> assuming <code>encoding</code> as character econding
+and returns html content as string. At request pahse will be added headers contained into 
+<code>props</code> Properties</td>
+</tr>
+
+<tr>
+<td><code>XLEMHttpClient.post(String url, String bodyContent)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Send <code>bodyContent</code> (as sequence of 
+<code>&amp;field1=value&amp;field2=value...</code>) to a specified 
+<code>url</code>  and returns html content 
+remote response as string.</td>
+</tr>
+
+<tr>
+<td><code>XLEMHttpClient.post(String url, String bodyContent, Properties props)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Send <code>bodyContent</code> (as sequence of 
+<code>&amp;field1=value&amp;field2=value...</code>) to a specified 
+<code>url</code>  and returns html content 
+remote response as string.
+At request pahse will be added headers contained into 
+<code>props</code> Properties
+</td>
+</tr>
+
+<tr>
+<td><code>XLEMHttpClient.postXML(String url, String bodyContent)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Send <code>bodyContent</code> (as xml sequence) to a specified 
+<code>url</code>  and returns xml (or html) remote response as string. 
+</td>
+</tr>
+
+<tr>
+<td><code>XLEMHttpClient.postXML(String url, String bodyContent, Properties props)</code></td>
+<td><code>MalformedURLException,
+			IOException</code></td>
+<td>Send <code>bodyContent</code> (as xml sequence) to a specified 
+<code>url</code>  and returns xml (or html) remote response as string.
+At request pahse will be added headers contained into 
+<code>props</code> Properties
+</td>
+</tr>
+
+</table>
+
+<br>In this example we're creating a <code>spider</code> that "grabs" 
+the page title of specified url.
+
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+&lt;@dim remoteURL as string@&gt;
+&lt;@set remoteURL=querystring.tostring("url")@&gt;
+&lt;@dim error as string@&gt;
+
+&lt;@dim START_TAG,END_TAG as string@&gt;
+&lt;@set START_TAG="&lt;title&gt;"@&gt;
+&lt;@set END_TAG="&lt;/title&gt;"@&gt;
+
+
+&lt;@dim res as string@&gt;
+&lt;@if !isblank(remoteURL)@&gt;
+	&lt;@try@&gt;
+		&lt;@set res=<b>XLEMHttpClient.get</b>(remoteURL)@&gt;
+		&lt;@dim indx as integer@&gt;
+		&lt;@set indx=res.toLowerCase().indexOf(START_TAG)@&gt;
+		&lt;@if indx&lt;0@&gt;
+	&lt;@set error="I'm sorrt but... title not present :(( "@&gt;
+		&lt;@else@&gt;
+			&lt;@set res=res.substring(indx+START_TAG.length())@&gt;
+			&lt;@set indx=res.toLowerCase().indexOf(END_TAG)@&gt; 
+			&lt;@if indx&lt;0@&gt;
+	&lt;@set error="I'm sorry but... title tag is not well formed :(( "@&gt;
+			&lt;@else@&gt;
+				&lt;@set res=res.substring(0,indx)@&gt;
+			&lt;@endif@&gt;
+		&lt;@endif@&gt;
+		
+	&lt;@endtry@&gt;
+	&lt;@catch Exception@&gt;
+		&lt;@set error=exception.getMessage()@&gt;
+	&lt;@endcatch@&gt;
+&lt;@endif@&gt;
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Http Client&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+	 	&lt;h1&gt;Page Title "grab"&lt;/h1&gt;
+		&lt;form method="get" action="" name="searchTitle"&gt;
+		Insert URL= &lt;input 
+		type="text" name="url" 
+		value="&lt;@=htmlformat(remoteURL)@&gt;"
+		size="60"&gt; &lt;input type="submit" 
+		value="Grab title..."&gt;
+		&lt;/form&gt;
+		
+		&lt;@if !isblank(error)@&gt;
+		ERROR:&lt;br&gt;
+			&lt;font color="red"&gt;
+			&lt;@=error@&gt;
+			&lt;/font&gt;
+		&lt;@else@&gt;
+		
+		PAGE TITLE at &lt;a href=
+		"&lt;@=remoteURL@&gt;"&gt;&lt;@=remoteURL@&gt;&lt;/a&gt; is " &lt;@=res@&gt; "
+		&lt;@endif@&gt;		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+</code></pre>
+
+and a response output example
+
+<pre><code>
+<h1>Page Title "grab"</h1>
+<form method="get" action="" name="searchTitle">
+Insert URL= <input 
+type="text" name="url" 
+value="http://www.sourceforge.net"
+size="60"> <input type="submit" value="Grab title...">
+</form>
+		
+ PAGE TITLE at <a href=
+	"http://www.sourceforge.net">http://www.sourceforge.net</a> 
+ is " SourceForge - Download, Develop and Publish Free Open Source Software "
+		
+</code></pre>
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="DatabaseAccess"></a>
+<h1>Database Access</h1>
+<p>
+Nowadays many applications need to interacts with RDBMS database such as MySQL, Postgres,
+Oracle, IBM DB2 (...).
+
+<br><br><b>In this section we provide  a simple overview: you're invited to follow future
+technical articles and tutorials and see related class <code>javadoc</code>!!!</b>  
+
+<br><br>XLEWS provides a component named <b><code>genericdatabase</code></b> (
+related to Java™ class <code>com.xXLEM.datatype.XLEMGenericDatabase</code> )
+that interacts with already existing
+<a href="http://docs.oracle.com/javase/6/docs/api/javax/sql/DataSource.html"
+><code>javax.sql.DataSource</code></a>
+or lets you to create a "pooled" connection using <b><code>LDBC</code></b> 
+connector (we discuss soon...).
+
+<br><br>XLEWS is already offering two extra components <b><code>sqlview</code></b> and 
+<b><code>sqlform</code></b> to automatically bind (just in a primitive manner) SQL query results 
+and create/modify simple table records. <font color="red"><b>Be careful because this last components
+are under "hard" development!!!</b></font>
+
+<br><br><b>Consider <code>genericdatabase</code> such as very simply and quick way to access 
+to database. In any case you can retrieve a <code>java.sql.Connection</code> from current
+<code>genericdatabase</code> using the <code>getconnection()</code> method.</b>
+
+<br><br><b>Any database connection is based on Java JDBC techonology, so be sure to
+have the proper JDBC driver related to your preferred database!
+Once retrieved driver file (<i>.jar</i>), you should place it inside a libraries folder of your
+current application <code>($WEB_APP_ROOT/WEB-INF/lib)</code> or, if more apps needs to use the 
+same database type, you can put this file into <code>$CATALINA_HOME/lib</code> folder!!!
+</b>
+
+<br><br>Once defined a <code>genericdatabase</code> component, you've to "open"
+communication with a specific database. 
+
+<br><ul>
+<li><b>Open database using <code>javax.sql.Datasource</code> instance (previous retrieved)</b>
+<pre><code>
+ &lt;@dim your_db as genericdatabase@&gt;
+ ...
+ &lt;@if your_db.open( datasource  )@&gt;
+
+    ... perform your sql operations...
+    
+    &lt;@call your_db.close()@&gt; [release connection]
+    
+ &lt;@else@&gt;
+ 	Error opening database: &lt;@=your_db.lasterror()@&gt;
+ &lt;@endif@&gt;   
+
+</code></pre>
+Please remember that XLEWS is bundled inside Tomcat 7.0.x, so a right and 
+standard way is to referrer to official guide
+<a 
+href="http://tomcat.apache.org/tomcat-7.0-doc/jndi-datasource-examples-howto.html"
+>Tomcat 7 - JNDI Datasource HOW-TO</a><br>&nbsp;
+</li>
+
+<li><b>Open database using <code>LDBC</code></b>
+<pre><code>
+ &lt;@dim your_db as genericdatabase@&gt;
+ ...
+ &lt;@if <b>your_db.open</b>( <b>application.getLDBC</b> ("ldbc_name")  )@&gt;
+
+    ... perform your sql operations...
+    
+    &lt;@call your_db.close()@&gt; [release connection]
+    
+ &lt;@else@&gt;
+ 	Error opening database: &lt;@=your_db.lasterror()@&gt;
+ &lt;@endif@&gt;   
+
+</code></pre>
+XLEWS provides a component driver to RDBMS named <b><code>ldbc</code></b>
+(XLEM DataBase Connector) powered by 
+<code>com.xXLEM.lews.runtime.XLEMLDBC</code> Java™ class and defined at
+"application" level (ServletContext attribute ...).
+<br><br><code>LDBC</code> looks like a DataSource and you must define it inside
+an xml file (<code>lews.xml</code>) inside your <code>WEB-INF</code> path
+<code>$APPLICATION_ROOT/WEB-INF/lews.xml</code>.
+<br><br>XLEWS at application startup can be read this file and retrieve additional infos.
+<br><br>This is an example of <code>LDBC</code> settings <code>lews.xml</code> file:
+<pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;lews&gt;
+
+ ...
+
+&lt;ldbcs&gt;
+
+  <b>&lt;ldbc&gt;</b>
+ 	<b>&lt;name&gt;</b>my_ecommerce<b>&lt;/name&gt;</b> [required]
+ 	<b>&lt;user&gt;</b>XLEM<b>&lt;/user&gt;</b> [rq]
+ 	<b>&lt;password&gt;</b>4Eq21xYt<b>&lt;/password&gt;</b> [rq]
+ 	<b>&lt;driver&gt;</b>org.postgresql.Driver<b>&lt;/driver&gt;</b> [rq]
+  <b>&lt;url&gt;</b>jdbc:postgresql://localhost/myecommercedb<b>&lt;/url&gt;</b> [rq]
+ 	<b>&lt;autocommit&gt;</b>true<b>&lt;/autocommit&gt;</b> [opt: default=true]
+ 	<b>&lt;maxconnections&gt;</b>15<b>&lt;/maxconnections&gt;</b> [opt: default=30]
+ 	<b>&lt;timeout&gt;</b>60<b>&lt;/timeout&gt;</b>   [in seconds!!!] [opt:def. =120]
+  <b>&lt;/ldbc&gt;</b>
+ 
+  &lt;ldbc&gt;
+ 	&lt;name&gt;other_db&lt;/name&gt;
+ 	...
+ &lt;/ldbc&gt;
+
+&lt;/ldbcs&gt;
+
+ ...
+
+&lt;/lews&gt;
+
+</code></pre> 
+</li>
+
+</ul>
+
+Once successfully opened a <code>genericdatabase</code> instance,
+you can perform <b><code>SQL queries</code></b> (and manage result set) operations or execute 
+<b><code>SQL statements</code></b>.
+
+<ul>
+<li><b>Perform SQL Queries:</b>
+<br>Suppose to have inside your current database a table <code>t_users</code>.
+This example will perform a SQL query returning login and age of all users sorted by login name.
+<pre><code>
+&lt;@if <b>db.query</b>("select * from t_users order by c_login")@&gt;
+		
+ &lt;@while <b>db.nextrecord</b>()@&gt;
+  &lt;@=<b>db.getstring</b>("c_login")@&gt;
+  with age= &lt;@=<b>db.getinteger</b>("c_age")@&gt;
+  &lt;hr&gt;
+ &lt;@wend@&gt;
+		
+&lt;@else@&gt;
+				
+ QUERY ERROR: &lt;@=<b>db.lasterror</b>()@&gt;
+		
+&lt;@endif@&gt;
+</code></pre>
+
+<br>Suppose to have inside your current database a table to perform a SQL query returning 
+also number of all founded records.
+<pre><code>
+&lt;@if <b>db.query</b>("select * from t_users order by c_login")@&gt;
+
+ RECORDS=   &lt;@=<b>db.records</b>()@&gt;
+ &lt;@call <b>db.beforefirstrecord</b>()@&gt;
+ &lt;hr&gt;		
+ &lt;@while <b>db.nextrecord</b>()@&gt;
+  &lt;@=<b>db.getstring</b>("c_login")@&gt;
+  with age= &lt;@=<b>db.getinteger</b>("c_age")@&gt;
+  &lt;hr&gt;
+ &lt;@wend@&gt;
+		
+&lt;@else@&gt;
+				
+ QUERY ERROR: &lt;@=<b>db.lasterror</b>()@&gt;
+		
+&lt;@endif@&gt;
+</code></pre>
+
+<br>Please see this example:
+<pre><code>
+Database: 	acme_demo [postgres]
+User: 		test
+Password:	XLEM
+
+ TABLE t_users:
+
+ id	login		age
+---------------------------------
+ 1	mgshow		28
+ 2	goofy		32
+ 3	arthur		48
+ 4	mildred		56
+ 
+</code></pre>
+
+<br><code>$APP_ROOT_PATH/WEB-INF/lews.xml [LDBC section]</code> 
+<pre><code>
+&lt;ldbcs&gt;
+ &lt;ldbc&gt;
+ 	&lt;name&gt;demo&lt;/name&gt;
+ 	&lt;user&gt;test&lt;/user&gt;
+ 	&lt;password&gt;XLEM&lt;/password&gt;
+ 	&lt;driver&gt;org.postgresql.Driver&lt;/driver&gt;
+ 	&lt;url&gt;jdbc:postgresql://localhost/acme_users&lt;/url&gt;
+ 	&lt;autocommit&gt;true&lt;/autocommit&gt;
+ 	&lt;maxconnections&gt;5&lt;/maxconnections&gt;
+ 	&lt;timeout&gt;60&lt;/timeout&gt;
+  &lt;/ldbc&gt;
+&lt;ldbcs&gt;
+
+</code></pre>
+
+<br>This is the source code <code>genericdatabase.xlem</code>
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim db as <b>genericdatabase</b>@&gt;
+	
+&lt;@/page@&gt;
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Database Connection with LDBC&lt;/title&gt;
+	 &lt;/head&gt;
+	 &lt;body&gt;
+		
+	&lt;@if db.<b>open</b>(application.<b>getLDBC</b>("demo"))@&gt;
+	
+		&lt;h1&gt;DB RESULTS&lt;/h1&gt;
+		
+		&lt;@if db.query("select * from t_users order by c_login")@&gt;
+		
+		RECORDS : &lt;@=db.<b>records</b>()@&gt;
+		&lt;hr&gt;
+		&lt;@call db.<b>beforefirstrecord</b>()@&gt;
+		
+			&lt;@while db.<b>nextrecord</b>()@&gt;
+				&lt;@=db.<b>getstring</b>("c_login")@&gt; 
+				with age =&lt;@=db.<b>getinteger</b>("c_age")@&gt;
+				&lt;hr&gt; 
+			&lt;@wend@&gt;
+		
+		&lt;@else@&gt;
+		
+			QUERY ERROR: &lt;@=db.<b>lasterror</b>()@&gt;
+		
+		&lt;@endif@&gt;
+		
+		&lt;@call db.<b>close</b>()@&gt;
+		
+		&lt;h1&gt;LDBC Status Monitor:&lt;/h1&gt;
+		&lt;pre&gt;&lt;@=application.<b>getLDBC</b>("demo").
+				<b>printStatus</b>()@&gt;&lt;/pre&gt;
+	
+		&lt;@else@&gt;
+	
+		ERROR: &lt;@=db.<b>lasterror</b>()@&gt;
+	
+	&lt;@endif@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+</code></pre>
+
+<br>And this is the output result in case of success:
+<pre><code><h1>DB RESULTS</h1>
+	RECORDS : 4<hr>
+	arthur with age =48<hr> 
+	goofy with age =32<hr> 
+	mgshow with age =28<hr> 
+	mildred with age =56<hr> 			
+	<h1>LDBC Status Monitor:</h1>
+	LDBC demo
+----------------------
+conn	|status
+----------------------
+0	|RLSD
+1	|FREE
+2	|FREE
+3	|FREE
+4	|FREE
+</code>
+</pre>
+
+
+</li>
+
+<li><b>Execute SQL statements:</b>
+<br>Suppose to update login and age of user with id = 4 with new values contained 
+inside two variables <code>newName</code> (as string) and <code>newAge</code> as integer:
+<pre><code>
+
+&lt;@if <b>db.execute</b>(
+  "update t_users set c_login='"+<b>sqlformat</b>(newName)+
+  "', c_age="+newAge+" where c_id=4") <b>&gt; 0</b>
+@&gt;
+		
+ User successfully updated!
+		
+&lt;@else@&gt;
+				
+ Unable to update user: &lt;@=<b>db.lasterror</b>()@&gt;
+		
+&lt;@endif@&gt;
+</code></pre>
+<code>sqlformat</code> is a function provided in any <code>.xlem</code> page and lets you to better 
+manage sql formatting inside any text field.
+
+<br><br><b>At this moment, XLEWS is not providing <code>Prepared Statement</code> management
+using <code>genericdatabase</code>, but as previously discussed, you can retrieve from 
+<code>genericdatabase</code> the "pure" <code>java.sql.Connection</code> and
+fully to implement Java™ sql API !!!</b>
+
+<br><b>At last, be careful in closing <code>genericdatabase</code> instance when 
+you'll terminate all SQL operations. In any case of LDBC, XLEWS will automatically try to
+recycle all opened and expired connections.</b><br>&nbsp;
+
+</li>
+
+<li>
+<b>Table Data Binding with <code>sqlview</code> component</b>
+
+<br><br>XLEWS lets developer to perform a binding from a "simple" table to an HTML (or XML) table
+using <b><code>sqlview</code></b> component (related to Java™ class 
+<code>com.xXLEM.datatype.XLEMSQLView</code>).
+
+<br><br>Just to take a quick look about, please see this example:
+
+<br><br><code>sqlview.xlem</code> page source code:
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim view as <b>sqlview</b>@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type"
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;Page title&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		&lt;h1&gt;Simple SQL Table Binding &lt;/h1&gt;
+		
+		&lt;@dim db as <b>genericdatabase</b>@&gt;
+		&lt;@if db.open(application.getLDBC("demo"))@&gt;
+			&lt;@call view.<b>setconnection</b>(db)@&gt;
+			&lt;@call view.<b>settable</b>("t_users")@&gt;
+			
+			&lt;@dim res as string@&gt;
+			
+			
+			&lt;hr&gt;&lt;b&gt;HTML Basic sql binding&lt;/b&gt;&lt;hr&gt;
+			&lt;@set res=view.<b>tohtml</b>()@&gt;
+			&lt;@if isnull(res)@&gt;
+				SQL binding error: &lt;@=view.<b>geterror</b>()@&gt;
+			&lt;@else@&gt;
+				&lt;@=res@&gt;
+			&lt;@endif@&gt;
+			
+			&lt;hr&gt;&lt;b&gt;XML Basic sql binding&lt;/b&gt;&lt;hr&gt;
+			&lt;@set res=view.<b>toxml</b>()@&gt;
+			&lt;@if isnull(res)@&gt;
+				SQL binding error: &lt;@=view.<b>geterror</b>()@&gt;
+			&lt;@else@&gt;
+				&lt;@=htmlformat(res)@&gt;
+			&lt;@endif@&gt;
+			
+			
+			&lt;hr&gt;&lt;b&gt;"Single" selection binding&lt;/b&gt;&lt;hr&gt;
+			&lt;form name="form1"&gt;
+			&lt;@call view.<b>setselection</b>("single")@&gt;
+			&lt;@set res=view.<b>tohtml</b>()@&gt;
+			&lt;@if isnull(res)@&gt;
+				SQL binding error: &lt;@=view.<b>geterror</b>()@&gt;
+			&lt;@else@&gt;
+				&lt;@=res@&gt;
+			&lt;@endif@&gt;
+			&lt;/form&gt;
+			
+			&lt;hr&gt;&lt;b&gt;"Multi" selection binding (with some additional settings)&lt;/b&gt;&lt;hr&gt;
+			&lt;form name="form2"&gt;
+			&lt;@call view.<b>setfilter</b>("c_id&gt;1")@&gt;
+			&lt;@call view.<b>setorderby</b>("c_age desc,c_login")@&gt;
+			&lt;@call view.<b>setselection</b>("multi","fldUserCheck")@&gt;
+			&lt;@call view.<b>setlink</b>("sqlform.xlem?id=$KEY$")@&gt;
+			
+			&lt;@call view.<b>sethtmlvar</b>("alternate1"," style='background:#fa0'")@&gt;
+			&lt;@call view.<b>sethtmlvar</b>("alternate2"," style='background:#f80'")@&gt;
+			
+			&lt;@set res=view.<b>tohtml</b>()@&gt;
+			&lt;@if isnull(res)@&gt;
+				SQL binding error: &lt;@=view.<b>geterror</b>()@&gt;
+			&lt;@else@&gt;
+				&lt;@=res@&gt;
+			&lt;@endif@&gt;
+			&lt;/form&gt;
+			
+			&lt;@call db.close()@&gt;
+		&lt;@else@&gt;
+			ERROR: &lt;font color="red"&gt;&lt;@=db.lasterror()@&gt;&lt;/font&gt;
+		&lt;@endif@&gt;
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+
+&lt;@// End of XLEM Web Page Code...@&gt;
+</code></pre>
+
+<br>And this is the returned output result...
+<pre><code>
+		<h1>Simple SQL Table Binding </h1><hr><b>HTML Basic sql binding</b><hr><table ><caption></caption><thead ><tr><th>c_id</th><th>c_login</th><th>c_age</th></tr></thead><tbody ><tr ><td>1</td><td>mgshow</td><td>28</td></tr><tr ><td>2</td><td>goofy</td><td>32</td></tr><tr ><td>3</td><td>arthur</td><td>48</td></tr><tr ><td>4</td><td>mildred</td><td>56</td></tr></tbody></tr></table><hr><b>XML Basic sql binding</b><hr>
+	&lt;res&gt;&lt;cols&gt;&lt;c id=&quot;c_id&quot; type=&quot;int8&quot;&gt;c_id&lt;/c&gt;
+	&lt;c id=&quot;c_login&quot; type=&quot;varchar&quot;&gt;c_login&lt;/c&gt;
+	&lt;c id=&quot;c_age&quot; type=&quot;int8&quot;&gt;c_age&lt;/c&gt;&lt;/cols&gt;
+	&lt;data&gt;&lt;r&gt;&lt;f&gt;1&lt;/f&gt;&lt;f&gt;mgshow&lt;/f&gt;&lt;f&gt;28&lt;/f&gt;
+	&lt;/r&gt;&lt;r&gt;&lt;f&gt;2&lt;/f&gt;&lt;f&gt;goofy&lt;/f&gt;&lt;f&gt;32&lt;/f&gt;
+	&lt;/r&gt;&lt;r&gt;&lt;f&gt;3&lt;/f&gt;&lt;f&gt;arthur&lt;/f&gt;&lt;f&gt;48&lt;/f&gt;
+	&lt;/r&gt;&lt;r&gt;&lt;f&gt;4&lt;/f&gt;&lt;f&gt;mildred&lt;/f&gt;&lt;f&gt;56&lt;/f&gt;
+	&lt;/r&gt;&lt;/data&gt;&lt;/res&gt;	
+	<hr><b>"Single" selection binding</b><hr><form name="form1"><table ><caption></caption>
+	<thead ><tr><th></th><th>c_id</th><th>c_login</th><th>c_age</th></tr>
+	</thead><tbody ><tr ><td><input type="radio" name="_lemItem" value="1"></td><td>1</td><td>mgshow</td><td>28</td></tr>
+	<tr ><td><input type="radio" name="_lemItem" value="2"></td><td>2</td><td>goofy</td><td>32</td></tr><tr ><td><input type="radio" name="_lemItem" value="3"></td><td>3</td><td>arthur</td><td>48</td></tr><tr ><td><input type="radio" name="_lemItem" value="4"></td><td>4</td><td>mildred</td><td>56</td></tr></tbody></tr></table>
+	</form><hr><b>"Multi" selection binding (with additional settings)</b><hr><form name="form2"><table >
+	<caption></caption><thead ><tr><th></th><th>c_id</th><th>c_login</th><th>c_age</th></tr>
+	</thead><tbody ><tr style='background:#fa0'><td><input type="checkbox" name="fldUserCheck" value="4"></td><td><a href="edit_record.xlem?id=4">4</a></a></td><td>mildred</td><td>56</td></tr><tr  style='background:#f80'><td><input type="checkbox" name="fldUserCheck" value="3"></td><td><a href="edit_record.xlem?id=3">3</a></a></td><td>arthur</td><td>48</td></tr><tr  style='background:#fa0'><td><input type="checkbox" name="fldUserCheck" value="2"></td><td><a href="edit_record.xlem?id=2">2</a></a></td>
+	<td>goofy</td><td>32</td></tr></tbody></tr></table>
+	</form></code></pre>
+
+</li>
+
+<li><b>Record data binding with <code>sqlform</code></b>
+
+<br><br>XLEWS lets developer to perform a binding from a "simple" table record to an HTML
+form (or XML) using <b><code>sqlform</code></b> component (related to Java™ class 
+<code>com.xXLEM.datatype.XLEMSQLForm</code>).
+
+<br><br>You can already modify base provided fields sequence by hiding someone or adding 
+someone else (for example just computed for display purpose...)
+
+<br><br>With <code>sqlform</code> component you can update, insert or delete records;
+XLEWS will automatically recognize and process (in a basic way) form fields.
+
+<br><br>Just to take a quick look about, please see this example that retrieve user login id from
+querystring
+
+<br><br><code>sqlform.xlem</code> page source code:
+
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim form as <b>sqlform</b>@&gt;
+	&lt;@dim db as genericdatabase@&gt;
+	&lt;@dim okDb as boolean@&gt;
+	&lt;@dim error as string@&gt;
+	
+	&lt;@set okDb=db.open(application.getLDBC("demo"))@&gt;
+	
+	&lt;@if !okDb@&gt;
+		&lt;@set error=db.lasterror()@&gt;
+		
+	&lt;@else@&gt;	
+		
+		&lt;@call form.<b>settable</b>("t_users")@&gt;
+		
+		&lt;@if form.<b>bind</b>(
+			db.getconnection(),
+			"c_id="+querystring.tointeger("id")) 
+		@&gt;
+		
+			&lt;@call form.<b>setForm</b>(
+				"frmEditUser", // form name
+				"POST", // form method
+				"sqlprocess.xlem", // form action
+				" id='frmEdt' " // extras
+			)@&gt;
+			
+			&lt;@call form.<b>setfield</b>("c_id","hidden","true")@&gt;
+			
+			&lt;@call form.<b>setfield</b>("c_login","label","User Login")@&gt;
+			&lt;@call form.<b>setfield</b>("c_age","label","User Age")@&gt;
+		
+		&lt;@else@&gt;
+			
+			&lt;@set error=form.<b>geterror</b>()@&gt;
+		
+		&lt;@endif@&gt;
+		
+		&lt;@call db.close()@&gt;
+		
+	&lt;@endif@&gt;	
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;@//HTML (dynamic) code goes here...@&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;SQL FORM&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		&lt;@if !okDb@&gt;
+		
+		DB ERROR= &lt;font color='red'&gt;"&lt;@=error@&gt;"&lt;/font&gt;
+		
+		&lt;@elseif !isblank(error)@&gt;
+		
+		CANNOT EDIT USER:&lt;hr&gt; &lt;font color='red'&gt;&lt;@=error@&gt;&lt;/font&gt;
+		&lt;@else@&gt;
+			&lt;h1&gt;Editing &lt;@=form.<b>getfield</b>("c_login").<b>getValue</b>()@&gt;&lt;/h1&gt;
+			&lt;a href="sqlview.xlem"&gt;Back to list...&lt;/a&gt;&lt;hr&gt;
+			&lt;@=form.<b>tohtml</b>()@&gt;
+		
+		&lt;@endif@&gt;
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+&lt;@/content@&gt;
+</code></pre>
+
+<br>This is an output example:
+<pre><code><h1>Editing mildred</h1> <a href="sqlview.xlem">Back to list...</a><hr><form name="frmEditUser" method="POST" action="sqlprocess.xlem"  id='frmEdt' ><input type="hidden" 
+	name="__lemSqlFormTable" value="t_users"/><table ><caption></caption><thead ><tr>
+	<th>Field</th><th>Value</th><th></th></tr></thead><tbody ><input type="hidden" name="C_ID" 
+	value="4"/><tr ><td>User Login</td><td><input type="text" name="C_LOGIN" 
+	value="mildred" /></td><td></td></tr><tr ><td>User Age</td><td><input type="text" 
+	name="C_AGE" value="56" /></td><td></td></tr><tr><td colspan="3" align="right"><input 
+	type="reset" name="resetData" value="Reset..."/>&nbsp;<input type="submit" name="send" 
+	value="Submit &gt;"/>&nbsp;</td></tr></tbody></tr></table></form>
+</code></pre>
+
+
+<br><br>This is the form action <code>sqlprocess.xlem</code> page of sql update form
+
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim form as <b>sqlform</b>@&gt;
+	&lt;@dim db as genericdatabase@&gt;
+	&lt;@dim okDb as boolean@&gt;
+	&lt;@dim error as string@&gt;
+	
+	&lt;@if db.open(application.getLDBC("demo"))@&gt;
+	
+		&lt;@// You must declare table [better security]@&gt;
+		&lt;@call form.<b>settable</b>("t_users")@&gt;
+		
+		&lt;@// Required for retrieving table structure@&gt; 
+		&lt;@call form.<b>bind</b>(db.getconnection())@&gt;	
+			
+		&lt;@if form.<b>updaterecord</b>(
+		
+			request.getParameterMap(), // Request Fields
+			db.getconnection(),	// SQL Connection
+			new String[] {"c_id"} // Keys
+			
+			) <b>&gt; 0 @&gt;</b>
+			
+		&lt;@else@&gt;
+		
+			&lt;@set error="Unable to update record!"+form.<b>geterror</b>()@&gt;
+		
+		&lt;@endif@&gt;	
+	
+		&lt;@call db.close()@&gt;
+	
+	&lt;@else@&gt;
+		&lt;@set error=db.lasterror()@&gt;
+	&lt;@endif@&gt;
+	
+	
+	&lt;@// If ok return to list ...@&gt;
+	&lt;@if isblank(error)@&gt;
+		&lt;@call response.redirect("sqlview.xlem")@&gt;
+	&lt;@endif@&gt;
+	
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+ &lt;@if !isblank(error)@&gt;&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;SQL PROCESS ERROR&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		ERROR PROCESSING SQL FORM:&lt;hr&gt;
+		&lt;font color="red"&gt;&lt;@=error@&gt;&lt;/font&gt;
+		
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+ &lt;@endif@&gt;
+&lt;@/content@&gt;
+
+&lt;@// End of XLEM Web Page Code...@&gt;
+</code></pre>
+
+
+<br><br>Appendix <code>setfield</code> allowed parameters:
+<pre><code>
+"readonly" ==&gt; "true" or "false"
+"hidden" ==&gt; "true" or "false"
+"password" ==&gt; "true" or "false" for display this field such as password...
+"flag" ==&gt; "true" or "false" for display this fiels such as checkbok(flag)...
+"textarea" ==&gt; "true" or "false" for display this fiels such as text area...
+"html" ==&gt; ex: "size='212' style='calendar2' ... "
+"label" ==&gt; new Caption/Label name of this field...
+"description" ==&gt; new description for this field...
+"value" ==&gt; new value for this field...
+"validation" ==&gt; validation allowed:
+   "notnull","number","integer","range[x,y]" ,"range(x,y)",
+   "regex: regular expression"... 
+"order" ==&gt; new order for this field in form fields sequence 
+[value will be converted in int]...
+
+</code></pre>
+
+
+</li>
+
+</ul>
+
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<a name="Localization"></a>
+<h1>Application Localization</h1>
+<p>
+Developers usually have to maintain the same web application using different languages.
+<br><br>To do it, you can use <b><code>localizer</code></b> component 
+(<code>com.xXLEM.datatype.XLEMLocalizer</code>).
+<br><br>The <code>localizer</code> works like 
+<a href="http://docs.oracle.com/javase/6/docs/api/java/util/ResourceBundle.html"
+><code>java.util.ResourceBundle</code></a>
+
+<br><br>To localize your <code>.xlem</code> applications you've to:
+<ol>
+<li><b>declare</b> a variable type <code>localizer</code></li>
+<li><b>open</b> the <b>bundle</b> passing optionally language specification</li>
+<li><b>get</b> and display message keys</li> 
+<li><b>close</b> the localizer instance</li>
+</ol>
+
+<br>To better understand, please consider this following example:
+
+<br><br>On the <code>$WEB_APP_PATH/src</code> we have created this Java™ package
+<code>locale.example</code> .
+<br><br>Inside this package we have created 3 (three) properties files:
+<ul>
+<li>welcome.properties
+<pre><code># Resource Bundle Example - Default Language
+welcome.title=Hello!
+welcome.message=Welcome to the XLEWS World!
+change.language=Select your language:
+system=Default System Language
+current=Current Browser Language
+en=English
+fr=French
+it=Italian
+de=German</code></pre>
+</li>
+
+<li>welcome_it.properties
+<pre><code># Resource Bundle Example - Italiano
+# Please note that "en" key is missing, so bundle will get 
+# the "default" en key ("English")
+welcome.title=Ciao!
+welcome.message=Benvenuto nel fantastico mondo di XLEWS!
+change.language=Cambia lingua:
+system=Linguaggio del tuo sistema operativo
+current=Lingua del browser
+fr=Francese
+it=Italiano
+de=Tedesco</code></pre>
+</li>
+
+<li>welcome_fr.properties
+<pre><code># Resource Bundle Example - Français
+welcome.title=Bonjour!
+welcome.message=Bienvenue dans le merveilleux monde du Lews!
+welcome.message=Changez language:
+current=Language navigateur actuel
+system=Language par défaut du système
+en=Anglais
+fr=Français
+it=Italien
+de=Allemande</code></pre>
+</li>
+</ul> 
+
+<br>This following example allows current user to change the display languages.
+<br><br>Available options will be
+<ul>
+<li>Operating System (OS) Language (default)</li>
+<li>Current Browser Language</li>
+<li>English</li>
+<li>Italian</li>
+<li>French</li>
+<li>German</li>
+</ul> 
+
+<br>We have declared only 2 (two) alternative languages (italian and french), so
+only SERVER (where XLEWS reside) with italian or french OS will display relative language
+by choosing first option (the others will have back "english" by default).
+
+<br><br>About second option you'll display italian or french by choosing only if
+your browser is set up for this languages (the others will have back "english" by default).
+
+<br><br>At last you can select "Italian" (you'll have back italian), "French" (you'll have back
+french ), "German" (you'll have back english, because we've not set up this language); by 
+selecting "english" you've back the page in english language.
+
+<br><br>This is the page source code (<code>localizer.xlem</code>):
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim loc as <b>localizer</b>@&gt;
+	
+	&lt;@dim qKey as string@&gt;
+	&lt;@set qKey=querystring.tostring("key")@&gt;
+	
+	<b>&lt;@// Try to localize with current browser language...@&gt;</b>
+	&lt;@if "current".equals(qKey)@&gt;
+		&lt;@call loc.<b>open</b>("locale.example.welcome",
+		request.getLocale().toString())@&gt;
+	
+	<b>&lt;@// Try to localize with current server OS language...@&gt;</b>	
+	&lt;@elseif "system".equals(qKey)@&gt;
+		&lt;@call loc.<b>open</b>("locale.example.welcome")@&gt;	
+		
+	<b>&lt;@// Try to localize with current retrieved key language...@&gt;</b>	
+	&lt;@else@&gt;
+		&lt;@call loc.<b>open</b>("locale.example.welcome", qKey)@&gt;
+	&lt;@endif@&gt;
+
+	&lt;@dim languageBar as stringarray@&gt;
+	&lt;@set languageBar=new String[] {"system","current","en","it","fr","de"}@&gt;
+	
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Application Localization&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+	 	&lt;h1&gt;&lt;@=loc.<b>getmessage</b>("welcome.title")@&gt;&lt;/h1&gt;
+	 	&lt;hr&gt;
+		&lt;h2&gt;&lt;@=loc.<b>getmessage</b>("welcome.message")@&gt;&lt;/h2&gt;
+		&lt;h3&gt;&lt;@=loc.<b>getmessage</b>("change.language")@&gt;&lt;/h3&gt;
+		
+		&lt;@forall String key in languageBar@&gt;
+		
+			&lt;a href="?key=&lt;@=key@&gt;"&gt;&lt;@=loc.<b>getmessage</b>(key)@&gt;&lt;/a&gt; |
+		
+		&lt;@endforall@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>Let us to show the "italian" response:
+<pre><code>
+<h1>Ciao!</h1><hr><h2>Benvenuto nel fantastico mondo di XLEWS!</h2>
+<h3>Cambia lingua:</h3>
+<a href="?key=system">Linguaggio del sistema operativo</a> |
+<a href="?key=current">Lingua del browser</a> |
+<a href="?key=en">English</a> |
+<a href="?key=it">Italiano</a> |
+<a href="?key=fr">Francese</a> |
+<a href="?key=de">Tedesco</a> |
+</code></pre>
+
+<br>You suggest to add other languages or change browser setting default language to perform 
+additional tests.
+
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="HTML5"></a>
+<h1>HTML 5 and CSS 3 development</h1>
+<p>
+<br><br>XLEWS il fully compatible with <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/"
+>HTML 5</a> and <a href="http://www.w3.org/Style/CSS/Overview.en.html"
+>CSS 3</a> programming.
+<br><br>Developing with HTML 5 is very easy because you've only to declare the proper doc type.
+<br><br>In addition you can mix html 5 tags and related objects (canvas, video, audio) with XLEM
+Server Page tags and Javascript to create unlimited dynamic effects and applications. 
+<br><br>Please see this example (<code>html5.xlem</code>)
+<pre><code>
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim canvasWidth,canvasHeight as integer@&gt;
+	&lt;@set canvasWidth=180@&gt;
+	&lt;@set canvasHeight=130@&gt;
+	
+	&lt;@dim baseImage as string@&gt;
+	&lt;@set baseImage="resources/backdrop.png"@&gt;
+	
+	&lt;@dim textRotation as string@&gt;
+	&lt;@set textRotation="2deg"@&gt;
+	
+	&lt;@// With "option" you can create dynamic option list@&gt;
+	&lt;@// to aggregate with a selection html field@&gt;
+	&lt;@dim choices as option@&gt;
+	&lt;@call choices.add("0","Draw on canvas")@&gt;
+	&lt;@call choices.add("1","Show Image")@&gt;
+	&lt;@call choices.add("2","Image multiply")@&gt;
+	
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	<b>&lt;!doctype html&gt;</b>
+	<b>&lt;html lang="en"&gt;</b>
+	 &lt;head&gt;
+	 	<b>&lt;meta charset="UTF-8" /&gt;</b>
+		&lt;title&gt;XLEWS & HTML 5 - Canvas&lt;/title&gt;
+		&lt;style type="text/css"&gt;
+		body {font-family:Arial}
+		<b>h1</b>{ 
+		<b>text-shadow</b>: 2px 8px #b5c1b8, -1px -1px #fff;
+		<b>box-shadow</b>: 4px 6px #b5c1b8;
+		<b>-webkit-transform</b>: rotate(&lt;@=<b>textRotation</b>@&gt;);
+		<b>-moz-transform</b>: rotate(&lt;@=<b>textRotation</b>@&gt;);
+		<b>-o-transform</b>: rotate(&lt;@=<b>textRotation</b>@&gt;);
+		 }
+		h2{ color:#666;font-size:13px;padding:0 }
+		p,li { font-size:11px }
+		.code {color:#03f;}
+		&lt;/style&gt;
+	 &lt;/head&gt;
+
+	 &lt;body onLoad="javascript:drawImg(0);"&gt;
+	 &lt;h1&gt;XLEWS & HTML 5 - Canvas&lt;/h1&gt;
+	 &lt;p&gt;Draw Image &lt;/p&gt;
+	 &lt;script type="application/x-javascript"&gt;
+	 function removeChildrenFrom(id){
+		var cal =document.getElementById(id);
+		if ( cal.hasChildNodes() ){
+			while ( cal.childNodes.length &gt;= 1 ){
+			 cal.removeChild( cal.firstChild ); } 
+		}
+	}
+	 
+	 function drawImg(vc) {
+			
+			removeChildrenFrom('canvasImg');
+			
+		var canvas=document.getElementById('canvasImg');
+			
+			
+			
+		if (canvas.getContext) {
+		
+			var ctx = canvas.getContext('2d');
+				ctx.clearRect(0,0,0,0)
+				
+			var img = new Image();
+				img.src = '&lt;@=baseImage@&gt;';
+				// Esempio base...
+				if(vc==0){
+					
+					&lt;@// Draw Box #1..@&gt;
+					ctx.fillStyle = "rgb(200,0,0)";
+			        ctx.fillRect (10, 10, 55, 50);
+			        
+					&lt;@// Draw Box #2..@&gt;
+			        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+			        ctx.fillRect (30, 30, 55, 50);
+				
+				&lt;@// Load image...@&gt;
+				}else if (vc==1){
+						img.onload = function(){
+						    
+					    ctx.drawImage(img,0,0);
+					    ctx.beginPath();
+					    &lt;@// Draw Line...@&gt;
+					    ctx.moveTo(30,96);
+					    ctx.lineTo(70,66);
+					    ctx.lineTo(103,76);
+					    ctx.lineTo(170,15);
+					    ctx.stroke();
+					  	}
+				 
+				&lt;@// Image multiply....@&gt; 
+				}else if(vc==2){
+					
+						
+		img.onload = function(){
+		    for (i=0;i&lt;4;i++){
+				for (j=0;j&lt;3;j++){ 
+				ctx.drawImage(img,j*50,i*38,50,38);}
+		    }
+		}	    
+				} 
+	 	
+	 	
+	 	
+	 	
+	 	}
+	}
+	 &lt;/script&gt;
+	 <b>&lt;canvas</b> id="canvasImg" width="&lt;@=<b>canvasWidth</b>@&gt;" 
+	 height="&lt;@=<b>canvasHeight</b>@&gt;"&gt;This text is displayed if 
+	 your browser does not support HTML5 Canvas.<b>&lt;/canvas&gt;</b>
+	 
+	 &lt;br /&gt;
+	 &lt;select onchange="javascript:drawImg(this.value)"&gt;
+	 	&lt;@=<b>choices.tohtml</b>("0")@&gt;
+	 &lt;/select&gt;
+	 
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+</code></pre>
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<a name="Mobile"></a>
+<h1>Mobile development and device recognition</h1>
+<p>
+Mobile device support is today highly recommended more specifically 
+when you're creating new web applications.
+<br><br>However mobile devices are very different by producer, display, resolution and
+so on...
+<br><br>Developers should be supported to recognize the best solution for current device
+navigating any (dynamic) web application.
+<br><br>Any <i>XLEM</i> can  provide a set of useful functions to recognize most
+popular mobile devices:
+
+<table>
+<tr><th>Page Function</th><th>Description</th></tr>
+<tr><td><code>is_android(String userAgent)</code></td><td>Return <code>true</code> if an Android device
+is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>is_blackberry(String userAgent)</code></td><td>Return <code>true</code> if a BlackBerry device
+is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>is_ipad(String userAgent)</code></td><td>Return <code>true</code> if a iPad device
+is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>is_iphone(String userAgent)</code></td><td>Return <code>true</code> if a iPhone device
+is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>is_windows_ce(String userAgent)</code></td><td>Return <code>true</code> if a Windows CE device
+is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>is_windows_mobile(String userAgent)</code></td><td>Return <code>true</code> if a Windows Mobile device
+is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>ismobile(String userAgent)</code></td><td>Return <code>true</code> if a "supposed" device
+mobile is currently connected; otherwise <code>false</code></td></tr>
+<tr><td><code>is_mobile(String userAgent)</code></td><td>The same of <code>ismobile(...)</code></td></tr>
+</table>
+
+<br>The <code>userAgent</code> can be retrieved by these following ways:
+<ul>
+<li><code>request.getuseragent()</code></li>
+<li><code>request.getheader("user-agent")</code></li>
+</ul>
+
+where <code>request</code> is provided current http user request.
+
+<br><br>This is a small but, we hope, very clear example (<code>mobile.xlem</code>):
+
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim uag as string@&gt;
+	&lt;@set uag=request.<b>getuseragent</b>()@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;XLEWS Mobile Device Recognition...&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+	
+	&lt;h1&gt;
+		&lt;@if <b>is_iphone</b>(uag)@&gt;
+			You're connected with I-Phone
+			
+		&lt;@elseif <b>is_blackberry</b>(uag)@&gt;
+			You're connected with BlackBerry
+			
+		&lt;@elseif <b>is_ipad</b>(uag)@&gt;
+			You're connected with I-Pad
+			
+		&lt;@elseif <b>is_mobile</b>(uag)@&gt;
+			I suppose you're connected with a mobile device!
+			
+		&lt;@else@&gt;
+			I suppose you're not connected with a mobile device!
+		&lt;@endif@&gt;
+	&lt;/h1&gt;
+	 &lt;/body&gt;
+
+	&lt;/html&gt;
+
+&lt;@/content@&gt;
+
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="RSS"></a>
+<h1>RSS Feed reader</h1>
+<p>
+XLEWS is providing two elementar components <b><code>rssnewsreader</code></b> (
+<code>com.xXLEM.xml.XLEMRSSNewsReader</code>)and <b><code>rssnews</code></b>
+(<code>com.xXLEM.xml.XLEMRSSNews</code>) wich developers can use to retrieve 
+<a href="http://en.wikipedia.org/wiki/RSS">RSS</a> feeds. 
+
+<br><br>The <code>rssnewsreader</code> component links to specified RSS feed: such as discussed about XLEWS XML Streaming, the RSS news can be retrieved from multiple
+stream sources (local files, url, string buffers and generic input stream ).
+
+
+<br><br>The <code>rssnews</code> component is used to manage (reading scope)
+any available news.
+
+<br><br>XLEWS converts reader fields and any news field/info as "properties": you've simply 
+to retrieve preferred info using [component.]<code>getproperty(propertyName)</code>.
+
+<br><br>For more info we suggest to consult related XLEWS javadoc and take a look to this example
+were we'll try to connect with 
+<a href="http://rss.cnn.com/rss/edition_world.rss">CNN RSS world channel</a> (<code>rss.xlem</code>).
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim rss as <b>rssnewsreader</b>@&gt;
+	
+	&lt;@dim title as string@&gt;
+	&lt;@dim image as string@&gt;
+	
+	&lt;@dim error as string@&gt;
+	
+	&lt;@if !rss.<b>openfromurl</b>("http://rss.cnn.com/rss/edition_world.rss")@&gt;
+	
+		&lt;@set error=rss.<b>geterror</b>()@&gt;
+		
+	&lt;@else@&gt;	
+	
+		&lt;@set title=rss.<b>getproperty</b>("title")@&gt;
+	
+		&lt;@if !isblank(rss.<b>getproperty</b>("image/url"))@&gt;
+		 &lt;@set image="&lt;img src=\""+
+		  rss.<b>getproperty</b>("image/url")+"\"&gt;&nbsp;"@&gt;
+		&lt;@endif@&gt;
+		
+	&lt;@endif@&gt;
+	
+	
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;html&gt;
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;RSS NEWS&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		&lt;@if isblank(error)@&gt;
+		
+			&lt;h1&gt;&lt;@=image@&gt; NEWS CHANNEL : &lt;@=title@&gt; &lt;/h1&gt;
+			
+			&lt;p&gt;&lt;@=rss.getproperty("description")@&gt;&lt;/p&gt;
+			
+			&lt;p&gt;Last updated: &lt;b&gt;&lt;@=rss.getproperty("pubdate")@&gt;&lt;/b&gt;&lt;/p&gt;
+			
+			&lt;p&gt;Available news: &lt;b&gt;&lt;@=rss.news()@&gt;&lt;/b&gt;&lt;hr&gt;&lt;/p&gt;
+			
+			&lt;@dim i as integer@&gt;
+			&lt;@dim news as <b>rssnews</b>@&gt;
+			&lt;@for i = 1 to rss.<b>news</b>()@&gt;
+			
+				&lt;@set news=rss.<b>getnews</b>(i-1)@&gt;
+			
+			&lt;div&gt;
+				&lt;font size=-1&gt;&lt;@=news.<b>getproperty</b>("pubdate")@&gt;&lt;/font&gt;&lt;br&gt;
+				#&lt;@=i@&gt;: &lt;b&gt;&lt;@=news.<b>getproperty</b>("title")@&gt;&lt;/b&gt;
+				&lt;div&gt;
+				&lt;font size="-1"&gt;&lt;@=news.<b>getproperty</b>("description")@&gt;&lt;/font&gt;
+				&lt;/div&gt;
+				&lt;hr&gt;
+			&lt;/div&gt;
+			
+			&lt;@endfor@&gt;
+		
+		&lt;@else@&gt;
+		
+			ERROR: &lt;font color="red"&gt;&lt;@=error@&gt;&lt;/font&gt;
+		
+		&lt;@endif@&gt;
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+</code></pre>  
+
+<br>And this should be a "summary" output return response:
+
+<code><pre>
+
+<h1>[ IMG LOGO] &nbsp; NEWS CHANNEL : CNN.com - WORLD </h1><p>CNN.com delivers up-to-the-minute news and information on 
+the latest top stories, weather, entertainment, politics and more.</p><p>Last updated: <b>Wed, 04 Jan 2012 02:13:41 EST</b></p><p>Available news: <b>3</b><hr></p>
+<div><font size=-1>Wed, 04 Jan 2012 01:05:58 EST</font><br>#1: <b>Taliban ready to talk, spokesman says</b><div><font size="-1">The Afghan Taliban are prepared to open...</font>
+</div>
+<hr>
+</div><div><font size=-1>Wed, 04 Jan 2012 00:48:28 EST</font><br>#2: <b>Maldives' top court to rule on spa ban</b>
+<div><font size="-1">The Supreme Court of the Maldives is expected to...</font> 
+</div>
+<hr>
+</div><div><font size=-1>Tue, 03 Jan 2012 09:42:40 EST</font><br>#3: <b>Ex-Tunisia leader faces trial over killings</b><div><font size="-1">Tunisian ex-President Zine el Abidine Ben Ali, who was...</font>
+</div>
+<hr>
+</div>
+</pre></code>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+<a name="AdvancedOutput"></a>
+
+<h1>Advanced output features (switchout)</h1>
+<p>
+If you take a look back at previous examples when returning some content via http response,
+we've used:
+<ul>
+<li>
+<b>&lt;@=[some expression]@&gt;</b> 
+</li>
+<li>
+	<code>out.write([some expression])</code> at Java™ sections...
+</li>
+<li>
+	directly typing html/xml code inside <code>@content</code> section.
+</li>
+</ul>
+
+<br><b>Any "standard" output operation must be performed only inside <code>@content</code> section !!!</b>
+
+<br><br>With <b><code>&lt;@switchout@&gt;</code></b> tag you can redirect any subsequent output operation
+(except <code>out.write</code> case) to specified buffer (<code>java.lang.StringBuffer</code>)
+until the <b><code>&lt;@/switchout@&gt;</code></b> is called.
+
+<br><br>In this way you can compose dynamic output sequence inside 
+<code>@page@</code> section and retrieve the "shifted" output whenever you needs.
+
+<br><br><b>Depending on your output dynamic implementation you may need to
+dynamically change the content type (and encoding) response: you can do this
+by omitting the <code>content</code> and/or <code>encoding</code> attributes
+of <code>@content</code>section!!!</b>
+
+<br><br>Please see the following example (<code>switchout.xlem</code>) where we provide
+a different output content type depending on provided "enc" querystring parameter:
+
+<pre><code>
+
+&lt;@page version="1.0"@&gt;
+
+	&lt;@dim encType as string@&gt;
+	&lt;@set encType=querystring.tostring("enc")@&gt;
+
+	&lt;@// Declare and instantiate a "buffer" @&gt;
+	&lt;@dim bfr as <b>newjavatype StringBuffer</b>@&gt;
+	
+	&lt;@dim welcomeMsg as string@&gt;
+	&lt;@set welcomeMsg="Hello now it's "+
+		new XLEMDate().format("yyyy-mm-dd hh:mn:ss")@&gt;
+	
+	&lt;@if encType.equals("xml")@&gt;
+	
+		&lt;@// Enforce response content type @&gt;
+		&lt;@// outside @content section !!!!!@&gt;
+		&lt;@call response.<b>setContentType</b>("text/xml")@&gt;
+		
+		<b>&lt;@switchout bfr@&gt;</b>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+		&lt;tags&gt;
+		&lt;tag&gt;&lt;@=htmlformat(welcomeMsg)@&gt;&lt;/tag&gt;
+		&lt;/tags&gt;
+		<b>&lt;@/switchout@&gt;</b>
+		
+	&lt;@else@&gt;	
+		
+		<b>&lt;@switchout bfr@&gt;</b>
+		&lt;html&gt;
+			&lt;head&gt;&lt;title&gt;HTML RESPONSE&lt;/title&gt;&lt;/head&gt;
+			&lt;body&gt;
+				&lt;@=welcomeMsg@&gt;
+			&lt;/body&gt;
+		&lt;/html&gt;
+		<b>&lt;@/switchout@&gt;</b>
+		
+	&lt;@endif@&gt;
+	
+
+&lt;@/page@&gt;
+
+&lt;@// Please forget "content" attribute if you like@&gt;
+&lt;@// to make DYNAMIC the content response type!!!!@&gt;
+&lt;@// You'll can do also with encoding attribute...@&gt;
+&lt;@content encoding="UTF-8"@&gt;&lt;@=<b>bfr.toString()</b>@&gt;&lt;@/content@&gt;
+
+&lt;@// End of XLEM Web Page Code...@&gt;
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<a name="Mixing"></a>
+<h1>Mixing .xlem pages with .jsp (and Servlets)</h1>
+<p>
+XLEWS is fully compliant with Servlet API 3.0 so you can run JSP and servlets in addition to
+<code>.xlem</code> pages: <b>you can  mix them all using "including" features!!!</b>
+
+<br><br>XLEWS provides you the <b><code>pageContext</code></b> instance inside 
+any <code>.xlem</code> page.
+
+<br><br><b>With <code>include(...)</code> <code>pageContext</code> method you can
+include (at runtime level) an  existing <code>.jsp</code>, <code>servlet</code> or 
+another <code>.xlem</code> inside the same project!!!</b> 
+
+<br><br>A <code>.jsp</code> or <code>servlet</code> can do also calling a <code>.xlem</code>
+page (...)  [ on a XLEWS context :)) !!!!]
+
+<br><br><b>JSPs, servlets, ans LEMs can share data at Application, Session and Request
+[as attributes] level.</b>
+
+<br><br>In this example a <code>lem2jsp.xlem</code> page will include a
+ <code>target.jsp</code> page:
+
+<br><br><code>lem2jsp.xlem</code> source code:
+<pre><code>
+
+&lt;@page version="1.0" session="true" createonfail="true"@&gt;
+
+	&lt;@call session.setstring("session.attribute","lem_123456")@&gt;
+	&lt;@call application.setstring("application.attribute","lem_35545454")@&gt;
+	&lt;@call request.setstring("request.attribute","lem_rq12345")@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	&lt;@//HTML (dynamic) code goes here...@&gt;
+
+	&lt;html&gt;
+
+	 &lt;head&gt;
+		&lt;meta HTTP-EQUIV="content-type" 
+		CONTENT="text/html; charset=UTF-8"/&gt;
+		&lt;title&gt;LEM including JSP&lt;/title&gt;
+	 &lt;/head&gt;
+
+	 &lt;body&gt;
+		Hello from LEM,
+		now I'm trying to open a .jsp page ....&lt;hr&gt;
+		
+		&lt;@try@&gt;
+			&lt;@call <b>pageContext.include("target.jsp")</b>@&gt;
+		&lt;@/try@&gt;
+		&lt;@catch Exception@&gt;
+	ERROR: &lt;font color="red"&gt;&lt;@=exception.toString()@&gt;&lt;/font&gt;
+		&lt;@/catch@&gt;
+		
+	 &lt;/body&gt;
+	&lt;/html&gt;
+&lt;@/content@&gt;
+
+
+</code></pre>
+
+<br><code>target.jsp</code> source code:
+<pre><code>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%&gt;
+
+Hello from .jsp
+&lt;hr&gt; 
+
+&lt;ul&gt;
+
+&lt;li&gt;
+Application attribute is 
+ &lt;b&gt;&lt;%=application.getAttribute("application.attribute") %&gt;&lt;/b&gt;   
+&lt;/li&gt;
+
+&lt;li&gt;
+Session attribute is 
+ &lt;b&gt;&lt;%=session.getAttribute("session.attribute") %&gt;&lt;/b&gt;   
+&lt;/li&gt;
+
+&lt;li&gt;
+Request attribute is 
+ &lt;b&gt;&lt;%=request.getAttribute("request.attribute") %&gt;&lt;/b&gt;   
+&lt;/li&gt;
+
+&lt;/ul&gt;
+
+</code></pre>
+
+<br>And this is the output response:
+<pre><code>
+Hello from LEM, now I'm trying to open a .jsp page ....<hr>Hello from .jsp<hr> <ul><li>Application attribute is <b>lem_35545454</b>   
+</li><li>Session attribute is <b>lem_123456</b>   
+</li><li>Request attribute is <b>lem_rq12345</b>   
+</li></ul>
+
+</code></pre>
+
+
+<br><br>In this other example a <code>jsp2lem.jsp</code> page will include a
+ <code>target.xlem</code> page:
+
+<br><br><code>jsp2lem.jsp</code> source code:
+<pre><code>
+&lt;%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="ISO-8859-1"%&gt;
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+&lt;title&gt;JSP including LEM&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+	Hello from JSP,
+	now I'm trying to open a .xlem page ....&lt;hr&gt;
+	
+	&lt;%
+	
+	session.setAttribute("session.attribute","jsp_123456");
+	application.setAttribute("application.attribute","jsp_35545454");
+	request.setAttribute("request.attribute","jsp_rq12345");
+
+	%&gt;
+	
+	
+	&lt;%try {
+		<b>pageContext.include("target.xlem")</b>;
+	} catch (Exception ex) {%&gt;
+		ERROR: &lt;font color="red"&gt;&lt;%=ex.toString()%&gt;&lt;/font&gt;
+	&lt;%} %&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+
+<br><code>target.xlem</code> source code:
+<pre><code>
+
+&lt;@page version="1.0" session="true" createonfail="true"@&gt;
+
+	&lt;@//Nothing to do...@&gt;
+
+&lt;@/page@&gt;
+
+&lt;@content type="text/html" encoding="UTF-8"@&gt;
+
+	Hello from .xlem
+&lt;hr&gt; 
+
+&lt;ul&gt;
+
+&lt;li&gt;
+Application attribute is 
+ &lt;b&gt;&lt;@=application.getstring("application.attribute") @&gt;&lt;/b&gt;   
+&lt;/li&gt;
+
+&lt;li&gt;
+Session attribute is 
+ &lt;b&gt;&lt;@=session.getstring("session.attribute") @&gt;&lt;/b&gt;   
+&lt;/li&gt;
+
+&lt;li&gt;
+Request attribute is 
+ &lt;b&gt;&lt;@=request.getstring("request.attribute") @&gt;&lt;/b&gt;   
+&lt;/li&gt;
+
+&lt;/ul&gt;
+	
+&lt;@/content@&gt;
+
+</code></pre>
+
+<br>And this is the output response:
+<pre><code>
+	Hello from JSP, now I'm trying to open a .xlem page ....<hr>
+	
+	Hello from .xlem<hr> <ul><li>Application attribute is <b>jsp_35545454</b>   
+</li><li>Session attribute is <b>jsp_123456</b>   
+</li><li>Request attribute is <b>jsp_rq12345</b>   
+</li></ul>
+
+</code></pre>
+
+</p>
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+
+<a name="Eclipse"></a>
+<h1>XLEWS Development under Eclipse platform - Plugins</h1>
+<p>
+Eclipse (<a href="http://www.eclipse.org">http://www.eclipse.org</a>) is one of must popular
+free and open source Java (and J2EE) IDE.
+<br><br>XLEWS provides this following plugin suite:
+<ul>
+<li><code>.xlem</code> pages editor with syntax highligthing</li>
+<li><code>.xlmh</code> modules editor with syntax highligthing</li>
+<li>wizard for <code>.xlem</code> pages creation</li>
+<li>wizard for <code>.xlmh</code> modules creation</li>
+</ul>
+</p>
+
+<br>We recomend use of <a href="http://eclipse.org/webtools/">Eclipse WTP</a> version, otherwise
+you should unabled to integrate, testing and deploy your applications into XLEWS application server
+bundled with Tomcat 7.
+
+<br><br>You can download last Eclipse IDE for Java EE Developers version
+<a href="http://www.eclipse.org/downloads/">here...</a>
+
+<br><br>Obviously we suppose you've also downloaded and installated last version of 
+XLEWS Application Server.
+
+<br>Go to <a href="https://sourceforge.net/projects/lews/files/eclipse-plugins/"
+>XLEWS Eclipse plugin section</a> and download last plugin version. 
+
+
+<br><br>Please see complete <a href="https://sourceforge.net/projects/lews/files/docs/eclipse-plugins/"
+>pdf document</a>  for visual plugin configuration. 
+
+
+
+
+
+
+<div id="navigation"><a href="#TOP">^TOP</a></div>
+
+</body>
+</html>
