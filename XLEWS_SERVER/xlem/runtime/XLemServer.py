@@ -2,6 +2,21 @@
 Created on Mar 5, 2012
 
 @author: mgshow
+
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
 '''
 
 import socketserver
@@ -28,9 +43,10 @@ class XLemServer(object):
     '''
     SERVER_PORT=-1
     SERVER_PATH=""
+    SERVER_WORK_DIRECTORY=""
     MIME_TYPES={}
     SERVER_NAME='Lemansys XLEWS'
-    SERVER_VERSION='1.0.0 beta'
+    SERVER_VERSION='1.0.0 Alpha'
     SERVER_CACHE={}
     
     def get_port(self):
@@ -52,7 +68,7 @@ class XLemServer(object):
         self.SERVER_CACHE.update(fileName, compiledByteCode)
         
         
-    def start_server(self, serverPath):
+    def start_server(self, serverPath, args=None):
         
         self.load_configuration(serverPath)
         self.load_mimetypes(serverPath)
@@ -63,9 +79,23 @@ class XLemServer(object):
           
         realPort=int(self.SERVER_PORT)
         
+        #Override parameters?
+        if not args is None:
+            
+            for i in range(2,len(args)):
+                print("PAR=",i,"=",repr(args[i]))
+                if args[i]=='-p':
+                    self.SERVER_PORT=args[i+1]
+                    realPort=int(self.SERVER_PORT)
+                    i=i+1
+                elif args[i]=='-w':
+                    self.SERVER_WORK_DIRECTORY=args[i+1]
+            
+            pass
+        
+        
         httpd = socketserver.ThreadingTCPServer(("", realPort), Handler)
-
-        print("serving at port", self.SERVER_PORT)
+        print(self.SERVER_NAME,self.SERVER_VERSION,"serving at port", self.SERVER_PORT, "WORK=",self.SERVER_WORK_DIRECTORY)
         httpd.serve_forever()
     
     def load_xdbc(self, xdbc):
@@ -89,6 +119,7 @@ class XLemServer(object):
         t_absolutePath=toboolean(app.attrib.get('absolute'))
         t_default=toboolean(app.attrib.get('default'))
         t_enabled=toboolean(app.attrib.get('enabled'))
+        
         
         t_app=XLemApplication(t_name, t_path, t_absolutePath, t_default, t_enabled, self)
         
@@ -155,6 +186,7 @@ class XLemServer(object):
         
         self.SERVER_PATH=serverPath
         self.SERVER_PORT=root.find('xlemTCP').text
+        self.SERVER_WORK_DIRECTORY=root.find('xlemWorkDir').text.replace("$root",self.SERVER_PATH)
         self.load_applications(root)
         self.load_hosts(root)
         

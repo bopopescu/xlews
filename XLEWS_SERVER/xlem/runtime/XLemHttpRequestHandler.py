@@ -525,8 +525,8 @@ WebSocket-Protocol: sample'''.strip()+"\r\n\r\n").replace('FINAL_KEY', response_
             env=XLemParserEnvironment()
             opts=XLemParserOptions()
             
-            env.destPath=self.XLEM_SERVER.SERVER_PATH+"/work/"
-               
+            env.destPath=self.XLEM_SERVER.SERVER_WORK_DIRECTORY
+            
             # Compose environment
             parts=trueFile.rpartition('/')
             env.sourceFile=parts[2]

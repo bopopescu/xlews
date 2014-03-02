@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+<!-- 
+
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+ -->
+
 <!-- XLEWS Web Server Configuration -->
 
 <xlem version="1.0.0">
@@ -9,12 +27,12 @@
 <xlemTCP>8088</xlemTCP>
 
 <!--  XLEWS Server Mode -->
-<!-- forceUpdate="1" force page re-compiling everytime -->
-<!-- a blank ("") or "0" value enable page cache management -->
+<!-- MODE "1" force page compiling if some change has occurred [recommended for developers] -->
+<!-- a blank ("") or "0" value enable page cache management [production environment]  -->
 <xlemMode>1</xlemMode>
 
 <!--  Temporary server working directory -->
-<xlemWorkDir>/work</xlemWorkDir>
+<xlemWorkDir>$root/work/</xlemWorkDir>
 
 <!--  Session Management -->
 <!--  maxNumb= maximimum concurrent session number -->
@@ -26,75 +44,60 @@
 <xlemLog path="../log/"/>
 
 
-
 <!--  XLem (Virtual) Hosts definition -->
-<!--  "$default" host name  -->
 
  <xlemHosts>
  
- 	<xlemHost name="take5" enabled="true" application="take5" home="index.html">
- 	</xlemHost>
- 	
- 	<xlemHost name="junof" enabled="true" application="junof" home="index.xlem">
- 	</xlemHost>
- 	
- 	<xlemHost name="10.0.0.88" enabled="true" application="junof" home="index.html">
- 	</xlemHost>
- 	
- 	<xlemHost name="192.168.1.4" enabled="true" application="junof" home="index.html">
- 	</xlemHost>
+ 	<xlemHost name="localhost" enabled="true" application="default" home="index.html"/>
  	
  
- 	<xlemHost name="your.host2" enabled="true" application="yourAppName" home="index.xlem">
+ <!--
+ 	<xlemHost name="yourHost" enabled="true" application="yourApp" home="index.html">
  	</xlemHost>
- 
- 	<xlemHost name="pippo.portal" enabled="true" application="ext1" home="index.xlem">
- 	</xlemHost>
+ -->	
+ 	
  </xlemHosts>
  
 
 <xlemApplications>
 	<xlemApp name="default" default="true" path="/www" isAbsolute="false" enabled="true">
+	
+	<!--  RDBMS Connection EXAMPLE -->
+	<!-- 
 		<xdbcs>
-			<xdbc name="mycomm" type="mysql" enabled="true">
+			<xdbc name="your_xdbc_name" type="mysql" enabled="true">
 				<xdbcprop name="host" value="localhost"/>
-				<xdbcprop name="database" value="rnet"/>
-				<xdbcprop name="user" value="root"/>
-				<xdbcprop name="password" value="balacche72"/>
+				<xdbcprop name="database" value="db_name"/>
+				<xdbcprop name="user" value="mysql_user"/>
+				<xdbcprop name="password" value="mysql_password"/>
 				<xdbcprop name="charset" value="utf8"/>
 				<xdbcprop name="use_unicode" value="true"/>
 				<xdbcprop name="get_warnings" value="true"/>
 				<xdbcprop name="port" value="3306"/>
 			</xdbc>
-			
-			<xdbc name="junof" type="mysql" enabled="true">
-				<xdbcprop name="host" value="localhost"/>
-				<xdbcprop name="database" value="junof"/>
-				<xdbcprop name="user" value="root"/>
-				<xdbcprop name="password" value="balacche72"/>
-				<xdbcprop name="charset" value="utf8"/>
-				<xdbcprop name="use_unicode" value="true"/>
-				<xdbcprop name="get_warnings" value="true"/>
-				<xdbcprop name="port" value="3306"/>
-			</xdbc>
-			
-			
 		</xdbcs>
+	-->	
+			
+	<!--  URL REWRITE FOR THIS APPLICATION -->		
+	<!-- 	
 		<rules>
 			<rule from="url1" to="url2" />
 		</rules>
-		<xlemOnStartup>your-action-xlem</xlemOnStartup>
-	</xlemApp>
-	<xlemApp name="take5" default="false" path="/Users/mgshow/Documents/workspace/Take5/www" absolute="true" enabled="tRue">	
-	</xlemApp>
-	
-	<xlemApp name="junof" default="false" path="/Users/mgshow/Documents/workspace/Junof/www" absolute="true" enabled="tRue">	
-	</xlemApp>
-	
-	
-	<xlemApp name="ext1" default="false" path="/Users/mgshow/Desktop/pippo" absolute="true" enabled="tRue">
+	 -->
+	 
+	 <!--  STARTUP ACTIONS -->
+	 <!-- 
+		<xlemOnStartup priority="1">your-action-xlem</xlemOnStartup>
+	 -->
+	 
 	</xlemApp>
 	
+	
+<!--  	
+	<xlemApp name="yourApp" default="false" path="/your/application/path" absolute="true" enabled="true">
+	
+	</xlemApp>
+-->	
 </xlemApplications>
 
 
