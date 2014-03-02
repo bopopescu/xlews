@@ -2,6 +2,21 @@
 Created on Nov 15, 2011
 
 @author: mgshow
+
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
 '''
 from xlem.runtime.XLemException import XLemException
 from datetime import datetime as __DATETIME__
@@ -25,20 +40,24 @@ class XLemParser(object):
                           
                           "string":"=''",
                           "integer": "=0",
+                          "byte":"=0",
                           "double": "=0.0",
                           "boolean": "=False",
                           "float": "=0.0",
                           "long": "=0",
                           "date": "=XLemDate()",
+                          
                           "buffer":"=[]",
+                          "vector":"=XLemVector()",
+                          "map":"=XLemMap()",
     
                           "genericdatabase": "=GenericDatabase()",
-                          
-                          "xmlparser": "",
-                          "xmldocument": "",
-                          "xmlbuilder": "",
-                          "xmlview": "",
-                          "xsltransform" : ""
+                         
+                          #"xmlparser": "",
+                          #"xmldocument": "",
+                          #"xmlbuilder": "",
+                          #"xmlview": "",
+                          #"xsltransform" : ""
     
                           
                           }
@@ -71,14 +90,15 @@ class XLemParser(object):
 
     ''' Buffers/Lists '''
     runBfr=[]
-        
-
+    
+   
     def __init__(self, parserEnvironment, parserOptions):
        
         self.xLemEnv = parserEnvironment   
         self.reset() 
         self.__useSession=False
         self.__createSessionOnFail=False
+        self.__inContent=False
         
     def reset(self):
         self.xlemTokens = []
@@ -135,7 +155,8 @@ class XLemParser(object):
         
         buffer.append("<@// End of file@>")
         
-        s="".join(buffer)    
+        s="".join(buffer)   
+        
                  
         status = ST_TEXT_READING
         
@@ -384,6 +405,8 @@ class XLemParser(object):
     
     def validateContent(self, tag):
         
+        self.__inContent=True
+        
         pars=self.__retrievePars(tag)
         
         bfr=[]
@@ -415,14 +438,18 @@ class XLemParser(object):
         
      
     def validateText(self, tag):
-        s=tag.getContent().strip()
+        s=tag.getOriginalContent().strip()
+        
+        
         if s=="":
             return
         
-        s=s.replace("\"","\\\"")
+        
+        s=s.replace("\"","\\\"").replace("$_$"," ")
+        
         
         if isblank(self.outBfrName):
-            tag.setCompiled("response.write_String(\"\"\""+s.replace("\"\"\"","\\\"\\\"\\\"")+"\"\"\")")   
+                tag.setCompiled("response.write_String(\"\"\""+s.replace("\"\"\"","\\\"\\\"\\\"")+"\"\"\")")   
         else:
             tag.setCompiled(self.outBfrName+".append(\"\"\""+s.replace("\"\"\"","\\\"\\\"\\\"")+"\"\"\")")        
     
@@ -531,7 +558,8 @@ class XLemParser(object):
                 raise XLemException("Invalid for statement: "+repr(tag.getContent()))
     
     def validateSetVariable(self, tag):
-        dim_re=re.compile("\s*(?P<XLEM_VAR_NAME>\w+)[\s]*[=][\s]*(?P<XLEM_VAR_VALUE>.+)\s*",re.VERBOSE)   
+        dim_re=re.compile("\s*(?P<XLEM_VAR_NAME>\w+)[\s]*[=][\s]*(?P<XLEM_VAR_VALUE>.+)\s*",re.VERBOSE)  
+         
         for match in dim_re.finditer(tag.getContent()):
             XLEM_VAR_NAME=match.group("XLEM_VAR_NAME")
             XLEM_VAR_VALUE=match.group("XLEM_VAR_VALUE")
@@ -744,6 +772,8 @@ $$Functions$$
         lbrs.append("from xlem.http.XLemPage import  XLemPage as XLEM_PAGE")
         lbrs.append("from xlem.utils import  *")
         lbrs.append("from xlem.data import *")
+        lbrs.append("from xlem.data.dateAndTime import *")
+        lbrs.append("from xlem.data.collections import *")
         lbrs.append("from os.path import getmtime")
         lbrs.append("from xlem.runtime.RDBMS import GenericDatabase")
         for lb in self.xlemLibraries:
@@ -1045,6 +1075,9 @@ class XLemTag(object):
         return self.name
         
     def getContent(self):    
+        return self.content.replace('\n',' ').replace('\r','')
+    
+    def getOriginalContent(self):    
         return self.content
     
     def getCompiled(self):
