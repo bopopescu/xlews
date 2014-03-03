@@ -16,15 +16,16 @@ limitations under the License.
 	
 @>
 
+
+
 <@page version="1.0"@>
 
+	
 	<@// Function "@page" inside ...@>
 	<@function average(a,b)@>
 		<@return (a+b)/2@>
 	<@/function@>
 	
-	
-	<@dim db as genericdatabase@>
 
 
 <@/page@>
@@ -37,7 +38,7 @@ limitations under the License.
 <@content type="text/html" encoding="utf-8"@>
 <html>
 <head>
-<title>TEST DIM</title>
+<title>TEST FUNCTIONS</title>
 </head>
 <body>
 

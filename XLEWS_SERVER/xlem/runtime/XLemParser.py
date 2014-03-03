@@ -68,7 +68,7 @@ class XLemParser(object):
     XLEM_TAGS = [
                  "page","/page",
                  "content","/content",
-                 "$TEXT","$REM","$EXPR",
+                 "$TEXT","$REM","$LONG_REM","$EXPR",
                  "dim","set",
                  "if","/if","endif","else","elseif",
                  "for","forall","next","/for","/next","endfor","endforall","/forall",
@@ -116,7 +116,12 @@ class XLemParser(object):
             realTagName = "$EXPR"   
         elif realTagName.startswith("//"):
             realTagContent = realTagName[2:] + realTagContent 
-            realTagName = "$REM" 
+            realTagName = "$REM"
+        elif realTagName.startswith("--"):
+            realTagContent = realTagName[2:] + realTagContent 
+            realTagName = "$LONG_REM"
+        
+            
         
         #print ("newTag==> '" + realTagName + "' '" + realTagContent + "'")   
         self.xlemTokens.append(XLemTag(realTagName, realTagContent))
@@ -218,6 +223,15 @@ class XLemParser(object):
                     currTagName += ch  
                     if currTagName=="=":
                         status=ST_TAG_CONTENT_READING
+                    elif currTagName=="--":
+                        endCommentPos=s.find("--@>",i)
+                        if endCommentPos>0:
+                            i=endCommentPos
+                            status=ST_TAG_CONTENT_READING
+                        else:
+                            raise XLemException("Comment <@-- Not closed!  ")
+                            pass
+                        
             elif status == ST_TAG_CONTENT_READING:
                 currTagContent += ch                                 
             else:
