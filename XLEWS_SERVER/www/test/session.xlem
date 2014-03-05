@@ -1,0 +1,35 @@
+<@page version="1.0" session="true" createonfail="true"@>
+
+<@/page@>
+
+<@content type="text/html" encoding="utf-8"@>
+<html>
+<head>
+<title>TEST SESSION</title>
+</head>
+<body>
+ 
+ <@dim b as boolean@>
+ <@set b=true@>
+ 
+ Session = <@=session.getid()@><hr>
+ 
+ <@dim count as integer@>
+ <@set count= session.getinteger("count")@>
+ 
+ <@set count=count+1@>
+ 
+
+ 
+ <@call session.setattribute("count",count)@>
+ 
+ Count = <@=count@>
+ <hr>
+ Exists "count" ? <@=session.exists("count")@> 
+ <@call session.removeattribute("count")@>
+ <br>Exists "count" ? <@=session.exists("count")@> 
+ 
+ 
+</body>
+</html>
+<@/content@>

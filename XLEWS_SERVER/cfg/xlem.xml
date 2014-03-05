@@ -48,7 +48,7 @@ limitations under the License.
 
  <xlemHosts>
  
- 	<xlemHost name="localhost" enabled="true" application="default" home="index.html"/>
+ 	<xlemHost name="localhost" enabled="true" application="default" home="index.xlem"/>
  	
  
  <!--

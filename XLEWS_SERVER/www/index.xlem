@@ -9,8 +9,8 @@
 
 <body style="font-family: arial,verdana">
 <div align='center' style="background:#eee">
-<span style="font-size:55px;font-weight:bold; color:#BB8800">X</span>
-<span style="font-size:44px;font-weight:normal; color:#888">Lews</span>
+<span style="font-size:180px;font-weight:bold; color:#BB8800">X</span>
+<span style="font-size:170px;font-weight:normal; color:#888">Lews</span>
 <br><b>Web and Application Server - Community Edition</b>
 <br>Version&nbsp;<@=application.server.SERVER_VERSION@>
 <br><br>

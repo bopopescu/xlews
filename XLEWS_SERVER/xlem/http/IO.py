@@ -5,7 +5,7 @@ Created on May 20, 2012
 '''
 from datetime import datetime as __DATETIME__
 import urllib.request as REQUEST
-from xlem.utils import isblank,generateKEY,trim,tointeger
+from xlem.utils import isblank,generateKEY,trim,tointeger,tostring
 from threading import Lock as Lock
 
 
@@ -258,9 +258,21 @@ class XLemHttpSession(object):
     def getid(self):
         return self.__id   
     
+    def exists(self, attrName):
+        return self.__attributes.get(attrName) is not None
+    
     def getattribute(self, attrName):
         return self.__attributes.get(attrName) 
     
+    def getstring(self, attrName):
+        return tostring(self.getattribute(attrName))
+    
+    def getinteger(self, attrName):
+        return tointeger(self.getattribute(attrName))
+    
+    def set(self, attrName, attrValue):
+        self.setattribute(attrName,attrValue)
+        
     def setattribute(self,attrName,attrValue):
         x={attrName:attrValue}
         
@@ -268,6 +280,18 @@ class XLemHttpSession(object):
         lock.acquire()
         try:
             self.__attributes.update(x)
+        finally:
+            lock.release()
+    
+    def remove(self, attrName):
+        self.removeattribute(attrName)
+            
+    def removeattribute(self,attrName):
+        
+        lock = Lock()
+        lock.acquire()
+        try:
+            return self.__attributes.pop(attrName)
         finally:
             lock.release()
         
