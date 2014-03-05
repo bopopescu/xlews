@@ -2,6 +2,22 @@
 Created on May 20, 2012
 
 @author: mgshow
+
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
 '''
 from datetime import datetime as __DATETIME__
 import urllib.request as REQUEST
@@ -254,12 +270,19 @@ class XLemHttpSession(object):
         self.application=application
         self.creationDate=__DATETIME__.now()
         self.__attributes={}
+    
+    def invalidate(self):
+        self.removeall()
+        
         
     def getid(self):
         return self.__id   
     
     def exists(self, attrName):
         return self.__attributes.get(attrName) is not None
+    
+    def getcreationdate(self):
+        return self.creationDate
     
     def getattribute(self, attrName):
         return self.__attributes.get(attrName) 
@@ -285,6 +308,15 @@ class XLemHttpSession(object):
     
     def remove(self, attrName):
         self.removeattribute(attrName)
+        
+    def keys(self):
+        return self.__attributes.keys()
+    
+    def elements(self):
+        return self.__attributes.items()
+        
+    def removeall(self):
+        self.__attributes.clear()
             
     def removeattribute(self,attrName):
         

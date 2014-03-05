@@ -10,25 +10,66 @@
 <body>
  
  <@dim b as boolean@>
- <@set b=true@>
+ <@dim t as boolean@>
  
- Session = <@=session.getid()@><hr>
+ <@set t=not isnull(session)@>
+ 
+ <@set b=t@> SESSION EXISTS?$_$ <@=t@>
+ 
+ <hr>
+ <@set t=not isblank(session.getid())@>
+ Session = <i><b><@=session.getid()@></b></i> [<@=session.getcreationdate()@>]$_$ Exists? <@=t@>
+ <@set b=b and t@>
+ 
+ <hr>
  
  <@dim count as integer@>
  <@set count= session.getinteger("count")@>
  
  <@set count=count+1@>
  
-
  
  <@call session.setattribute("count",count)@>
  
- Count = <@=count@>
- <hr>
- Exists "count" ? <@=session.exists("count")@> 
- <@call session.removeattribute("count")@>
- <br>Exists "count" ? <@=session.exists("count")@> 
+ <@set t=(count == session.getinteger("count"))@>
  
+ <@=count@> == <@=session.getinteger("count")@> ? $_$<@=t@>
+ <@set b=b and t@>
+ 
+ <hr>
+ <@set t=session.exists("count")@>
+ Exists "count" ? <@=t@>
+ <@call b=b and t@>
+ 
+ <hr> 
+ <@call session.removeattribute("count")@>
+ <@set t=session.exists("count")@>
+ Exists "count" ? <@=t@> 
+ <@set b=b and (not t)@>
+
+<hr>
+	<@call session.set("name","John")@>
+	<@call session.set("email","j@abc.com")@>
+	<@call session.set("complex", {"adresses": ['one','two','three'] } )@>
+	
+	<ul>
+	<@forall k in session.keys()@>
+		<li>KEY [<@=k@>] = <@=session.getattribute(k)@></li>
+	<@endforall@>
+ 	</ul>
+ 	
+ 	<ul>
+ 	<@forall elm in session.elements()@>
+ 		<li>ELEMENT : <@=elm@></li>
+ 	<@/forall@>
+ 	</ul>
+ 	
+<hr> 
+<@if b@> 
+	[[TEST_OK]]
+<@else@>
+	[[TEST_KO]]
+<@endif@>
  
 </body>
 </html>
