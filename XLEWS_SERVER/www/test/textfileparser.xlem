@@ -17,10 +17,9 @@ limitations under the License.
 @>
 <@page version="1.0"@>
   
-	<@dim dt as date@>
-	<@dim christmas as date@>
-	<@call christmas.setdate(dt.getyear(),12,24)@>
-	<@call christmas.settime(23,59,0)@>
+	
+	<@dim parser as textfileparser@>
+	
 	
 
 <@/page@>
@@ -28,26 +27,36 @@ limitations under the License.
 <@content type="text/html" encoding="utf-8"@>
 <html>
 <head>
-<title>TEST DATES</title>
+<title>TEXT FILE PARSER</title>
 </head>
 <body>
 
+	<@=application.getRealPath()@>
+
+	<@if parser.open(application.getRealPath()+"/test/dates.xlem")@>
+
+		<ul>
+		<@while parser.hasline()@>
+			<li>
+			<@=htmlformat(parser.nextline().replace("[[TEST_","[ [ TEST_"))@>
+			</li>
+		<@wend@>		
+		</ul>
+
+		<@call parser.close()@>
+
+	<hr>[[TEST_OK]]
+
+	<@else@>
+
+	<hr>
+	[[TEST_KO]] <font color='red'><@=parser.geterror()@></font>
+
+	<@endif@>
+
+
 <hr>
-	NOW$_$:$_$ <@=dt@>
-<hr>
-	BEFORE CHRISTMAS:$_$<@=christmas@> 
-	| Year= <@=christmas.getyear()@>, Month= <@=christmas.getmonth()@>, Day= <@=christmas.getday()@>
-<hr>	
-	<@dim dt2 as date@>
-	<@set dt2=christmas.adjust(2,1,5,3,2,20)@>
-	New adjusted date $_$<@=dt2@> ||| 
-	<@dim x as date@>
-	<@call x.setdate(2014,2,28)@>
-	<@call x.settime(0,0,0)@>
-	<@set x=x.adjust(0,1,0,0,0,0)@>
-	<@=x@>
-<hr>
-	[[TEST_OK]]
+	
 </body>
 </html>
 <@/content@>
