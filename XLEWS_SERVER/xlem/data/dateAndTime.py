@@ -26,7 +26,27 @@ class XLemDate(object):
     '''
     classdocs
     '''
-
+    __formats= {
+                "default":"%Y-%m-%d %H:%M:%S",
+                "dd/mm/yyyy":"%d/%m/%Y",
+                "yyyy-mm-dd":"%Y-%m-%d",
+                "dd/mm/yy":"%d/%m/%y",
+                "mm/dd/yyyy":"%m/%d/%Y",
+                "mm/dd/yy":"%m/%d/%y",
+                
+                "hh:mn:ss":"%H:%M:%S",
+                "hh:mn":"%H:%M",
+                "mn:ss":"%M:%S",
+                
+                "hh":"%H",
+                "mn":"%M",
+                "ss":"%S",
+                "dd":"%d",
+                "mm":"%m",
+                "yy":"%y",
+                "yyyy":"%Y"
+                
+                }
 
     def __init__(self):
         '''
@@ -189,7 +209,8 @@ class XLemDate(object):
         return str(self.__date.strftime("%Y-%m-%d %H:%M:%S"))
     
     def format(self, frmt=None):
-        return str(self.__date.strftime("%Y-%m-%d %H:%M:%S"))
-    
+        if XLemDate.__formats is None or (XLemDate.__formats.get(frmt)) is None:
+            return str(self.__date.strftime("%Y-%m-%d %H:%M:%S"))
+        return str(self.__date.strftime(XLemDate.__formats.get(frmt)))
     
     

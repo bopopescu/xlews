@@ -53,6 +53,23 @@ limitations under the License.
 	<@call td.setfromtimestamp(tstamp)@>
 	<@="Date from timestamp "+tostring(td)@>
 <hr>
+	FORMATS:<br>
+	<@set fmts = [
+		"","yyyy-mm-dd","dd/mm/yyyy",
+		"dd/mm/yy","mm/dd/yyyy","mm/dd/yy",
+		"hh:mn:ss","hh:mn","mn:ss",
+		"yyyy","yy","mm","dd","hh","mn","ss"
+	]@>
+	<table border="1">
+	<tr><th>FORMAT STRING</th><th>Output</th></tr>
+	<@forall fm in fmts@>
+		<tr>
+			<td>'<@=fm@>'</td> 
+			<td><@=td.format(fm)@></td>	
+		</tr>
+	<@endforall@>
+	</table>
+<hr>
 	[[TEST_OK]]
 </body>
 </html>
