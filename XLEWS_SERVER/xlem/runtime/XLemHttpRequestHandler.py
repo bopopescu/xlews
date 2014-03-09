@@ -2,7 +2,24 @@
 Created on Mar 5, 2012
 
 @author: mgshow
+
+Copyright 2012-2014 XLEM by Lemansys S.r.l. - ITALY
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
 '''
+import sys,traceback as __TRACEBACK__ 
 import http.server
 import imp
 import cgi,cgitb
@@ -279,7 +296,7 @@ WebSocket-Protocol: sample'''.strip()+"\r\n\r\n").replace('FINAL_KEY', response_
                         pass
                 
         except Exception as ex:
-            print("ERRORE HOST",repr(ex))
+            print("HOST ERROR: ",repr(ex))
             pass
         
         self.set_application(_curr_app)
@@ -542,13 +559,16 @@ WebSocket-Protocol: sample'''.strip()+"\r\n\r\n").replace('FINAL_KEY', response_
             self.write_String('HTTP/1.1 404 Not Found\n\n')
             print (err)
 
-        except (XLemException) as err:            
+        except (XLemException) as err:      
+            print("LEMANZYZ ERROR: ",err)      
             self.write_String('HTTP/1.1 500 Server Error\n\n')
-            print ("ERROR 500:", err)
+            __TRACEBACK__.print_exc(err)
         
         except (Exception) as err:
             self.write_String('HTTP/1.1 500 Server Error\n\n')
-            print ("ERROR 500:", err)
+            #print ("ERROR 500:", err)
+            __TRACEBACK__.print_exc(err)
+            
         
         finally:
             if xlem_file is not None:

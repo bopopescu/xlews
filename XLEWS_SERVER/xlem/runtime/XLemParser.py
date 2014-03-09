@@ -64,6 +64,17 @@ class XLemParser(object):
                           }
     
     
+    XLEM_VAR_IMPORT_DICT = {
+                            
+                        "date": "from xlem.data.dateAndTime import XLemDate",
+                        "vector": "",
+                        "map": "",
+                        "genericdatabase":"",
+                        "textfileparser":"from xlem.data.io import FileParser"
+                            
+                        }
+    
+    
     # "string|integer|double|float|string|boolean|date"
       
     XLEM_TAGS = [

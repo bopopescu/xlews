@@ -32,7 +32,10 @@ class XLemDate(object):
         '''
         Constructor
         '''
-        self.__date=__DATETIME__.now().date()
+        self.__date=__DATETIME__.now()
+        
+    def setfromtimestamp(self, tstamp):
+        self.__date=__DATETIME__.fromtimestamp(tstamp)
         
     def adjust(self, years, months, days, hours, minutes, seconds ):
         
@@ -91,6 +94,7 @@ class XLemDate(object):
                 hr=hr+24   
             pass 
         
+        #print("Howmanydays",y,m,"=",self.__howmanydays(y, m))
         hwmn=self.__howmanydays(y,m)
         
         while d<1 or d>hwmn:
@@ -109,7 +113,7 @@ class XLemDate(object):
             
             pass
         
-        
+        #print("Setto",y,m,d)
         dt.setdate(y, m, d)
         dt.settime(hr, mn, sc)
         
@@ -122,7 +126,8 @@ class XLemDate(object):
         if m in (1,3,5,7,8,10,11):
             return 31
         elif m==2:
-            if y-(y/4)*4==0 or y-(y/400)*400==0 and y-(y/100)*100>0:
+            #if y-(y/4)*4==0 or y-(y/400)*400==0 and y-(y/100)*100>0:
+            if (y % 400 == 0 or (y % 100 != 0 and y % 4 == 0)):
                 return 29
             else:
                 return 28
@@ -175,11 +180,15 @@ class XLemDate(object):
         
     def setdate(self, year, month, day):
         self.__date=self.__date.replace(year,month,day)
+        #self.__date=__DATETIME__.combine(__DATETIME__(year,month,day),__TIME__(hh,mn,ss))
         
     def settime(self, hour, minute, second):
         self.__date=__DATETIME__.combine(self.__date,__TIME__(hour,minute,second))
 
     def __repr__(self):
+        return str(self.__date.strftime("%Y-%m-%d %H:%M:%S"))
+    
+    def format(self, frmt=None):
         return str(self.__date.strftime("%Y-%m-%d %H:%M:%S"))
     
     
