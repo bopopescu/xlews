@@ -52,9 +52,10 @@ class XLemParser(object):
                           "map":"=XLemMap()",
     
                           "genericdatabase": "=GenericDatabase()",
-                          "textfileparser" : "=FileReader()"
+                          "textfileparser" : "=FileReader()",
+                        
                          
-                          #"xmlparser": "",
+                          "xmlparser": "=XmlParser()"
                           #"xmldocument": "",
                           #"xmlbuilder": "",
                           #"xmlview": "",
@@ -803,6 +804,7 @@ $$Functions$$
         lbrs.append("from os.path import getmtime")
         lbrs.append("from xlem.runtime.RDBMS import GenericDatabase")
         lbrs.append("from xlem.data.io import *")
+        lbrs.append("from xlem.data.xml import *")
         for lb in self.xlemLibraries:
             lbrs.append(lb)
         

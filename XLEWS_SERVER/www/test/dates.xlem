@@ -51,11 +51,11 @@ limitations under the License.
 	<@set tstamp=1403768361@>	
 	<@dim td as date@>
 	<@call td.setfromtimestamp(tstamp)@>
-	<@="Date from timestamp "+tostring(td)@>
+	<@="Date from timestamp <i>"+tostring(tstamp)+"</i>="+tostring(td)@>
 <hr>
 	FORMATS:<br>
 	<@set fmts = [
-		"","yyyy-mm-dd","dd/mm/yyyy",
+		"","yyyymmdd","yyyy-mm-dd","dd/mm/yyyy",
 		"dd/mm/yy","mm/dd/yyyy","mm/dd/yy",
 		"hh:mn:ss","hh:mn","mn:ss",
 		"yyyy","yy","mm","dd","hh","mn","ss"

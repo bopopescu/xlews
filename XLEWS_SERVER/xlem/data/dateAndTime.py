@@ -25,9 +25,10 @@ from datetime import datetime as __DATETIME__, time as __TIME__
 class XLemDate(object):
     '''
     classdocs
-    '''
+    ''' 
     __formats= {
                 "default":"%Y-%m-%d %H:%M:%S",
+                "yyyymmdd":"%Y%m%d",
                 "dd/mm/yyyy":"%d/%m/%Y",
                 "yyyy-mm-dd":"%Y-%m-%d",
                 "dd/mm/yy":"%d/%m/%y",
